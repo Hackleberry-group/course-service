@@ -1,9 +1,14 @@
-*/.vscode/
+# Ignore Visual Studio files
+.vs/
+.vscode/
+.idea/
 
-*/.idea/
+# Ignore build directories
+bin/
+obj/
 
-*/.vs/
-
-*/.bin/
-
-*/.obj/
+# Ignore user-specific files for Visual Studio
+*.user
+*.userosscache
+*.suo
+*.userprefs

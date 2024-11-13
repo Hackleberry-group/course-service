@@ -3,17 +3,23 @@ using CourseServiceAPI.Services;
 using CourseServiceAPI.Validators;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using CourseServiceAPI.Middleware;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    // Disable the default model validation (todo:Don't forget to remove this if we want to use the default model validation)
+    options.ModelValidatorProviders.Clear();
+});
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
-builder.Services.AddValidatorsFromAssemblyContaining<CourseValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ExerciseDtoValidator>();
 
 builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IExerciseService, ExerciseService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -29,6 +35,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ValidationExceptionMiddleware>(); // Ensure this is before UseAuthorization
 
 app.UseAuthorization();
 

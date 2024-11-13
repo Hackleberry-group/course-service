@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <Folder Include="CourseServiceTests\" />
-    <Folder Include="ValidatorTests\" />
+    <Folder Include="ExerciseServiceTests\" />
   </ItemGroup>
 
   <ItemGroup>
