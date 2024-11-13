@@ -1,7 +1,34 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{27BF3DB5-312C-454E-A713-BF37483B3511}|..\\CourseServiceAPI.Tests\\CourseServiceAPI.Tests.csproj|c:\\masa\u00FCst\u00FC\\term-2-cloud\\hackleberry\\course-service\\courseserviceapi.tests\\validatortests\\coursevalidatortests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{27BF3DB5-312C-454E-A713-BF37483B3511}|..\\CourseServiceAPI.Tests\\CourseServiceAPI.Tests.csproj|c:\\masa\u00FCst\u00FC\\term-2-cloud\\hackleberry\\course-service\\courseserviceapi.tests\\courseservicetests\\courseservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|c:\\masa\u00FCst\u00FC\\term-2-cloud\\hackleberry\\course-service\\courseserviceapi\\controllers\\coursecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|solutionrelative:controllers\\coursecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|c:\\masa\u00FCst\u00FC\\term-2-cloud\\hackleberry\\course-service\\courseserviceapi\\validators\\coursevalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|solutionrelative:validators\\coursevalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|c:\\masa\u00FCst\u00FC\\term-2-cloud\\hackleberry\\course-service\\courseserviceapi\\services\\courseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|solutionrelative:services\\courseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|c:\\masa\u00FCst\u00FC\\term-2-cloud\\hackleberry\\course-service\\courseserviceapi\\interfaces\\icourseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|solutionrelative:interfaces\\icourseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|c:\\masa\u00FCst\u00FC\\term-2-cloud\\hackleberry\\course-service\\courseserviceapi\\models\\course.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3D825CAE-09C5-4DD4-943C-4B77B1C20FD8}|CourseServiceAPI.csproj|solutionrelative:models\\course.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +36,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -18,6 +45,97 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{605322a2-17ae-43f4-b60f-766556e46c87}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CourseValidatorTests.cs",
+              "DocumentMoniker": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI.Tests\\ValidatorTests\\CourseValidatorTests.cs",
+              "RelativeDocumentMoniker": "..\\CourseServiceAPI.Tests\\ValidatorTests\\CourseValidatorTests.cs",
+              "ToolTip": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI.Tests\\ValidatorTests\\CourseValidatorTests.cs",
+              "RelativeToolTip": "..\\CourseServiceAPI.Tests\\ValidatorTests\\CourseValidatorTests.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAswBkAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T11:51:52.934Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CourseServiceTests.cs",
+              "DocumentMoniker": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI.Tests\\CourseServiceTests\\CourseServiceTests.cs",
+              "RelativeDocumentMoniker": "..\\CourseServiceAPI.Tests\\CourseServiceTests\\CourseServiceTests.cs",
+              "ToolTip": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI.Tests\\CourseServiceTests\\CourseServiceTests.cs",
+              "RelativeToolTip": "..\\CourseServiceAPI.Tests\\CourseServiceTests\\CourseServiceTests.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAwAAAAXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T11:43:14.266Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CourseValidator.cs",
+              "DocumentMoniker": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Validators\\CourseValidator.cs",
+              "RelativeDocumentMoniker": "Validators\\CourseValidator.cs",
+              "ToolTip": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Validators\\CourseValidator.cs",
+              "RelativeToolTip": "Validators\\CourseValidator.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T11:32:40.454Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CourseService.cs",
+              "DocumentMoniker": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Services\\CourseService.cs",
+              "RelativeDocumentMoniker": "Services\\CourseService.cs",
+              "ToolTip": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Services\\CourseService.cs",
+              "RelativeToolTip": "Services\\CourseService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T11:28:58.827Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ICourseService.cs",
+              "DocumentMoniker": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Interfaces\\ICourseService.cs",
+              "RelativeDocumentMoniker": "Interfaces\\ICourseService.cs",
+              "ToolTip": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Interfaces\\ICourseService.cs",
+              "RelativeToolTip": "Interfaces\\ICourseService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T11:28:27.754Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Course.cs",
+              "DocumentMoniker": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Models\\Course.cs",
+              "RelativeDocumentMoniker": "Models\\Course.cs",
+              "ToolTip": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Models\\Course.cs",
+              "RelativeToolTip": "Models\\Course.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T11:04:39.21Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CourseController.cs",
+              "DocumentMoniker": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Controllers\\CourseController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CourseController.cs",
+              "ToolTip": "C:\\Masa\u00FCst\u00FC\\Term-2-Cloud\\Hackleberry\\course-service\\CourseServiceAPI\\Controllers\\CourseController.cs",
+              "RelativeToolTip": "Controllers\\CourseController.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAABEAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T11:02:02.873Z",
+              "EditorCaption": ""
             }
           ]
         },
