@@ -1,1 +1,9 @@
-.vs/
+*/.vscode/
+
+*/.idea/
+
+*/.vs/
+
+*/.bin/
+
+*/.obj/
