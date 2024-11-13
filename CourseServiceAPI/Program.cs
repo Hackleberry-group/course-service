@@ -1,8 +1,20 @@
+using CourseServiceAPI.Interfaces;
+using CourseServiceAPI.Services;
+using CourseServiceAPI.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<CourseValidator>();
+
+builder.Services.AddScoped<ICourseService, CourseService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
