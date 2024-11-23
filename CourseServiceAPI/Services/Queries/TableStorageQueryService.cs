@@ -1,8 +1,6 @@
 ﻿using Azure;
 using Azure.Data.Tables;
 using CourseServiceAPI.Interfaces.Queries;
-using System.Collections.Concurrent;
-using System.Xml;
 
 namespace CourseServiceAPI.Services.Queries;
 
@@ -15,7 +13,6 @@ public class TableStorageQueryService : ITableStorageQueryService
         _tableServiceClient = tableServiceClient;
     }
 
-    // Get table client and create table if it does not exist
     public async Task<IEnumerable<T>> GetAllEntitiesAsync<T>(string tableName) where T : class, ITableEntity, new()
     {
         var tableClient = _tableServiceClient.GetTableClient(tableName);
@@ -32,7 +29,6 @@ public class TableStorageQueryService : ITableStorageQueryService
         return entities;
     }
 
-    // Get table client and create table if it does not exist, GetEntityAsync
     public async Task<T> GetEntityAsync<T>(string tableName, string partitionKey, string rowKey)
         where T : class, ITableEntity, new()
     {
@@ -50,35 +46,10 @@ public class TableStorageQueryService : ITableStorageQueryService
         }
     }
 
-    public Task<IEnumerable<T>> GetEntitiesByPartitionKeyAsync<T>(string tableName, string partitionKey) where T : class, ITableEntity, new()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<IEnumerable<T>> GetEntitiesByRowKeyAsync<T>(string tableName, string rowKey) where T : class, ITableEntity, new()
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task DeleteEntityAsync<T>(string tableName, string partitionKey, string rowKey) where T : class, ITableEntity, new()
+    public async Task DeleteEntityAsync(string tableName, string partitionKey, string rowKey)
     {
         var tableClient = _tableServiceClient.GetTableClient(tableName);
 
         await tableClient.DeleteEntityAsync(partitionKey, rowKey);
-    }
-
-    public Task DeleteEntitiesByPartitionKeyAsync<T>(string tableName, string partitionKey) where T : class, ITableEntity, new()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteEntitiesByRowKeyAsync<T>(string tableName, string rowKey) where T : class, ITableEntity, new()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task DeleteEntitiesByRowKeyAsync<T>(string tableName, string partitionKey, string rowKey) where T : class, ITableEntity, new()
-    {
-        throw new NotImplementedException();
     }
 }

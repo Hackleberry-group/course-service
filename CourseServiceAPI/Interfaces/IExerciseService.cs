@@ -1,7 +1,4 @@
-﻿using CourseServiceAPI.Interfaces.Queries;
-using CourseServiceAPI.Models.Exercise;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using CourseServiceAPI.Models.Exercise;
 
 namespace CourseServiceAPI.Interfaces
 {

@@ -24,7 +24,7 @@ namespace CourseServiceAPI.Controllers
         {
             var exercises = await _exerciseService.GetExercisesAsync();
 
-            return exercises.Select(ExerciseMapper.MapToResponseDto);
+            return exercises.Select(Mapper.MapToExerciseResponseDto);
         }
 
         [HttpGet("{id}")]
@@ -32,16 +32,21 @@ namespace CourseServiceAPI.Controllers
         {
             var exercise = await _exerciseService.GetExerciseByIdAsync(id);
 
-            return Ok(exercise);
+            var response = Mapper.MapToExerciseResponseDto(exercise);
+
+            return Ok(response);
         }
 
         [HttpPost]
         public async Task<ActionResult<Exercise>> CreateExercise([FromBody] ExerciseRequestDTO exerciseDto)
         {
-            var exercise = ExerciseMapper.MapDtoToExercise(exerciseDto);
+            var exercise = Mapper.MapToExercise(exerciseDto);
 
             var createdExercise = await _exerciseService.CreateExerciseAsync(exercise);
-            return CreatedAtAction(nameof(GetExerciseById), new { id = createdExercise.Id }, createdExercise);
+
+            var response = Mapper.MapToExerciseResponseDto(createdExercise);
+
+            return CreatedAtAction(nameof(GetExerciseById), new { id = createdExercise.Id }, response);
         }
 
         [HttpPut("{id}")]
@@ -49,12 +54,18 @@ namespace CourseServiceAPI.Controllers
         {
             _logger.LogInformation("Updating exercise with ID: {Id}", id);
 
-            // Map DTO to model
-            var exercise = ExerciseMapper.MapDtoToExercise(exerciseDto);
+            var exercise = Mapper.MapToExercise(exerciseDto);
+            exercise.Id = id;
+            exercise.PartitionKey = EntityConstants.ExercisePartitionKey;
+            exercise.RowKey = id.ToString();
 
             var updatedExercise = await _exerciseService.PutExerciseByIdAsync(id, exercise);
-            return Ok(updatedExercise);
+
+            var response = Mapper.MapToExerciseResponseDto(updatedExercise);
+
+            return Ok(response);
         }
+
 
         [HttpPost("{id}/complete")]
         public async Task<IActionResult> CompleteExercise(Guid id, [FromBody] List<List<AnsweredQuestion>> answeredQuestions)
@@ -67,8 +78,8 @@ namespace CourseServiceAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExercise(Guid id)
         {
-            _logger.LogInformation("Deleting exercise with ID: {Id}", id);
             await _exerciseService.DeleteExerciseAsync(id);
+            _logger.LogInformation("Deleted exercise with ID: {Id}", id);
             return NoContent();
         }
     }

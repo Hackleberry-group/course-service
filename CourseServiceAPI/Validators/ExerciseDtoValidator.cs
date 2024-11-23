@@ -8,9 +8,6 @@ namespace CourseServiceAPI.Validators
     {
         public ExerciseDtoValidator()
         {
-/*            RuleFor(x => x.Id)
-                .Must(*/
-
             RuleFor(x => x.TopicId)
                 .NotEmpty().WithMessage("Topic ID is required.")
                 .Must(BeAValidGuid).WithMessage("Topic ID must be a valid GUID.");

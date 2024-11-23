@@ -22,6 +22,7 @@ builder.Services.AddScoped<ITableStorageCommandService, TableStorageCommandServi
 builder.Services.AddScoped<ITableStorageQueryService, TableStorageQueryService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
+builder.Services.AddScoped<ITopicService, TopicService>();
 
 // Add services to the container.
 builder.Services.AddControllers(options =>

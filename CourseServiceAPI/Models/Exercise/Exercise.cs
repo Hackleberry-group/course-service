@@ -1,5 +1,6 @@
 ﻿using Azure;
 using Azure.Data.Tables;
+using CourseServiceAPI.Helpers;
 
 namespace CourseServiceAPI.Models.Exercise
 {
@@ -25,7 +26,7 @@ namespace CourseServiceAPI.Models.Exercise
 
         public Exercise()
         {
-            PartitionKey = "Exercise";
+            PartitionKey = EntityConstants.ExercisePartitionKey;
             Id = Guid.NewGuid(); // Assign a new Guid value to the Id property
             RowKey = Id.ToString();
         }
