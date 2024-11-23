@@ -1,72 +1,65 @@
 ﻿using CourseServiceAPI.Interfaces;
+using CourseServiceAPI.Interfaces.Commands;
+using CourseServiceAPI.Interfaces.Queries;
 using CourseServiceAPI.Models.Exercise;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace CourseServiceAPI.Services;
-
-public class ExerciseService : IExerciseService
+namespace CourseServiceAPI.Services
 {
-    public IEnumerable<Exercise> GetExercises()
+    public class ExerciseService : IExerciseService
     {
-        // Get exercises from the database but for now return a dummy list
-        return new List<Exercise>
+        private readonly ITableStorageQueryService _tableStorageQueryService;
+        private readonly ITableStorageCommandService _tableStorageCommandService;
+        private const string TableName = "Exercises";
+
+        public ExerciseService(ITableStorageQueryService tableStorageQueryService, ITableStorageCommandService tableStorageCommandService)
         {
-            new() { Id = Guid.NewGuid(), IsTopicExam = false, TopicId = Guid.NewGuid() },
-            new() { Id = Guid.NewGuid(), IsTopicExam = true, TopicId = Guid.NewGuid() }
-        };
-    }
+            _tableStorageQueryService = tableStorageQueryService;
+            _tableStorageCommandService = tableStorageCommandService;
+        }
 
-    // Get Exercise by Id
-    public Exercise GetExerciseById(Guid id)
-    {
-        return new Exercise { Id = id, IsTopicExam = false, TopicId = Guid.NewGuid() };
-    }
-
-    // Put exercise by Id
-    public Exercise PutExerciseById(Guid id, Exercise exercise)
-    {
-        var updatedExercise = new Exercise
+        public async Task<IEnumerable<Exercise>> GetExercisesAsync()
         {
-            Id = id,
-            IsTopicExam = exercise.IsTopicExam, TopicId = exercise.TopicId
-        };
+            return await _tableStorageQueryService.GetAllEntitiesAsync<Exercise>(TableName);
+        }
 
-        return updatedExercise;
-    }
-
-    public Exercise CreateExercise(Exercise exercise)
-    {
-        // For now return a dummy exercise
-        var createdExercise = new Exercise
+        public async Task<Exercise> GetExerciseByIdAsync(Guid id)
         {
-            Id = Guid.NewGuid(),
-            IsTopicExam = exercise.IsTopicExam,
-            TopicId = exercise.TopicId
-        };
+            return await _tableStorageQueryService.GetEntityAsync<Exercise>(TableName, "ExercisePartition", id.ToString());
+        }
 
-        return createdExercise;
-    }
-
-    public void CompleteExercise(Guid exerciseId, List<List<AnsweredQuestion>> answeredQuestions)
-    {
-        // For now add a dummy completion with the exerciseId and answeredQuestions without any database logic
-
-        var completion = new ExerciseCompletion { ExerciseId = exerciseId, AnsweredQuestions = answeredQuestions };
-
-        Console.WriteLine($"Exercise completion: {completion.ExerciseId}");
-        foreach (var question in completion.AnsweredQuestions)
+        public async Task<Exercise> PutExerciseByIdAsync(Guid id, Exercise exercise)
         {
-            Console.WriteLine("Question:");
-            foreach (var answeredQuestion in question)
+            await _tableStorageCommandService.UpdateEntityAsync(TableName, exercise);
+            return exercise;
+        }
+
+        public async Task<Exercise> CreateExerciseAsync(Exercise exercise)
+        {
+            await _tableStorageCommandService.AddEntityAsync(TableName, exercise);
+            return exercise;
+        }
+
+        public async Task CompleteExerciseAsync(Guid exerciseId, List<List<AnsweredQuestion>> answeredQuestions)
+        {
+            // For now add a dummy completion with the exerciseId and answeredQuestions without any database logic
+            var completion = new ExerciseCompletion { ExerciseId = exerciseId, AnsweredQuestions = answeredQuestions };
+
+            foreach (var question in completion.AnsweredQuestions)
             {
-                Console.WriteLine($"Answered question: {answeredQuestion.QuestionId}");
-                Console.WriteLine($"Answer: {answeredQuestion.AnswerId}");
+                Console.WriteLine("Question:");
+                foreach (var answeredQuestion in question)
+                {
+                    Console.WriteLine($"Answered question: {answeredQuestion.QuestionId}");
+                    Console.WriteLine($"Answer: {answeredQuestion.AnswerId}");
+                }
             }
         }
-    }
 
-    public void DeleteExercise(Guid id)
-    {
-        // Delete exercise from the database
-        Console.WriteLine($"Exercise with id {id} deleted");
+        public async Task DeleteExerciseAsync(Guid id)
+        {
+            await _tableStorageQueryService.DeleteEntityAsync<Exercise>(TableName, "Exercise", id.ToString());
+        }
     }
 }

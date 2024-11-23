@@ -1,19 +1,22 @@
-﻿using CourseServiceAPI.Models.Exercise;
+﻿using CourseServiceAPI.Interfaces.Queries;
+using CourseServiceAPI.Models.Exercise;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CourseServiceAPI.Interfaces
 {
     public interface IExerciseService
     {
-        IEnumerable<Exercise> GetExercises();
+        Task<IEnumerable<Exercise>> GetExercisesAsync();
 
-        Exercise CreateExercise(Exercise exercise);
+        Task<Exercise> CreateExerciseAsync(Exercise exercise);
 
-        void CompleteExercise(Guid exerciseId, List<List<AnsweredQuestion>> answeredQuestions);
+        Task CompleteExerciseAsync(Guid exerciseId, List<List<AnsweredQuestion>> answeredQuestions);
 
-        Exercise GetExerciseById(Guid id);
+        Task<Exercise> GetExerciseByIdAsync(Guid id);
 
-        Exercise PutExerciseById(Guid id, Exercise exercise);
+        Task<Exercise> PutExerciseByIdAsync(Guid id, Exercise exercise);
 
-        void DeleteExercise(Guid id);
+        Task DeleteExerciseAsync(Guid id);
     }
 }

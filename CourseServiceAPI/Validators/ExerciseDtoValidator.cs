@@ -4,13 +4,12 @@ using FluentValidation;
 
 namespace CourseServiceAPI.Validators
 {
-    public class ExerciseDtoValidator : AbstractValidator<ExerciseDto>
+    public class ExerciseDtoValidator : AbstractValidator<ExerciseRequestDTO>
     {
         public ExerciseDtoValidator()
         {
-            RuleFor(x => x.Id)
-                .NotEmpty().WithMessage("Exercise ID is required.")
-                .Must(BeAValidGuid).WithMessage("Exercise ID must be a valid GUID.");
+/*            RuleFor(x => x.Id)
+                .Must(*/
 
             RuleFor(x => x.TopicId)
                 .NotEmpty().WithMessage("Topic ID is required.")

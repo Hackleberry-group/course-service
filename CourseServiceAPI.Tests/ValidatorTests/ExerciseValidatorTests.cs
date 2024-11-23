@@ -8,16 +8,15 @@ namespace CourseServiceAPI.Tests.ValidatorTests
     public class ExerciseValidatorTests
     {
         private ExerciseDtoValidator _validator;
-        private ExerciseDto _validExercise;
+        private ExerciseRequestDTO _validExercise;
 
         [SetUp]
         public void Setup()
         {
             _validator = new ExerciseDtoValidator();
 
-            _validExercise = new ExerciseDto
+            _validExercise = new ExerciseRequestDTO
             {
-                Id = Guid.NewGuid().ToString(),
                 TopicId = Guid.NewGuid().ToString(),
                 IsTopicExam = true
             };
@@ -26,16 +25,14 @@ namespace CourseServiceAPI.Tests.ValidatorTests
         [Test]
         public void ShouldHaveErrorWhenPropertiesAreEmpty()
         {
-            var invalidExercise = new ExerciseDto
+            var invalidExercise = new ExerciseRequestDTO
             {
-                Id = "",
                 TopicId = "",
                 IsTopicExam = null
             };
 
             var result = _validator.TestValidate(invalidExercise);
 
-            result.ShouldHaveValidationErrorFor(e => e.Id);
             result.ShouldHaveValidationErrorFor(e => e.TopicId);
             result.ShouldHaveValidationErrorFor(e => e.IsTopicExam);
         }
@@ -45,7 +42,6 @@ namespace CourseServiceAPI.Tests.ValidatorTests
         {
             var result = _validator.TestValidate(_validExercise);
 
-            result.ShouldNotHaveValidationErrorFor(e => e.Id);
             result.ShouldNotHaveValidationErrorFor(e => e.TopicId);
             result.ShouldNotHaveValidationErrorFor(e => e.IsTopicExam);
         }

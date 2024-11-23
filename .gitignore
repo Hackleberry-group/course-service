@@ -12,3 +12,6 @@ obj/
 *.userosscache
 *.suo
 *.userprefs
+
+# Ignore all files that start with __azurite
+__azurite*

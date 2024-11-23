@@ -1,8 +1,8 @@
 ﻿namespace CourseServiceAPI.Models.Exercise.DTOs;
 
-public class ExerciseDto
+public class ExerciseRequestDTO
 {
-    public string Id { get; set; }
+    public int Order { get; set; }
 
     public string TopicId { get; set; }
 

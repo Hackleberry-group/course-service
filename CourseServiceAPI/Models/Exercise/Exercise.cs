@@ -1,14 +1,39 @@
-﻿namespace CourseServiceAPI.Models.Exercise;
+﻿using Azure;
+using Azure.Data.Tables;
 
-public class Exercise
+namespace CourseServiceAPI.Models.Exercise
 {
-    public Guid Id { get; set; }
+    public class Exercise : ITableEntity
+    {
+        public string PartitionKey { get; set; }
 
-    public bool IsTopicExam { get; set; }
+        public string RowKey { get; set; }
 
-    // Placeholder for topicId
-    public Guid TopicId { get; set; }
+        public DateTimeOffset? Timestamp { get; set; }
 
-    // A list of questions which will be retrieved using QuestionService microservice with an HTTP request
-    //public List<Question> Questions { get; set; }
+        public ETag ETag { get; set; }
+
+        public Guid Id { get; set; }
+
+        public int Order { get; set; }
+
+        public bool IsTopicExam { get; set; }
+
+        public Guid TopicId { get; set; }
+
+        public List<Question> Questions { get; set; }
+
+        public Exercise()
+        {
+            PartitionKey = "Exercise";
+            Id = Guid.NewGuid(); // Assign a new Guid value to the Id property
+            RowKey = Id.ToString();
+        }
+
+    }
+
+    public class Question
+    {
+        // Define properties for the Question class as needed
+    }
 }
