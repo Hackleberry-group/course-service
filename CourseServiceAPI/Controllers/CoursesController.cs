@@ -6,12 +6,12 @@ namespace CourseServiceAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CourseController : ControllerBase
+    public class CoursesController : ControllerBase
     {
-        private readonly ILogger<CourseController> _logger;
+        private readonly ILogger<CoursesController> _logger;
         private readonly ICourseService _courseService;
 
-        public CourseController(ILogger<CourseController> logger, ICourseService courseService)
+        public CoursesController(ILogger<CoursesController> logger, ICourseService courseService)
         {
             _logger = logger;
             _courseService = courseService;

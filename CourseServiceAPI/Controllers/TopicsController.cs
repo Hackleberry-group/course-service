@@ -9,12 +9,12 @@ namespace CourseServiceAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TopicController : ControllerBase
+public class TopicsController : ControllerBase
 {
-    private readonly ILogger<TopicController> _logger;
+    private readonly ILogger<TopicsController> _logger;
     private readonly ITopicService _topicService;
 
-    public TopicController(ILogger<TopicController> logger, ITopicService topicService)
+    public TopicsController(ILogger<TopicsController> logger, ITopicService topicService)
     {
         _logger = logger;
         _topicService = topicService;

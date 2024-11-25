@@ -8,12 +8,12 @@ namespace CourseServiceAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ExerciseController : ControllerBase
+    public class ExercisesController : ControllerBase
     {
-        private readonly ILogger<ExerciseController> _logger;
+        private readonly ILogger<ExercisesController> _logger;
         private readonly IExerciseService _exerciseService;
 
-        public ExerciseController(ILogger<ExerciseController> logger, IExerciseService exerciseService)
+        public ExercisesController(ILogger<ExercisesController> logger, IExerciseService exerciseService)
         {
             _logger = logger;
             _exerciseService = exerciseService;
@@ -46,7 +46,7 @@ namespace CourseServiceAPI.Controllers
 
             var response = Mapper.MapToExerciseResponseDto(createdExercise);
 
-            return CreatedAtAction(nameof(GetExerciseById), new { id = createdExercise.Id }, response);
+            return CreatedAtAction(nameof(GetExerciseById), new { id = createdExercise.RowKey }, response);
         }
 
         [HttpPut("{id}")]
