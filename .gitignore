@@ -1,9 +1,17 @@
-*/.vscode/
+# Ignore Visual Studio files
+.vs/
+.vscode/
+.idea/
 
-*/.idea/
+# Ignore build directories
+bin/
+obj/
 
-*/.vs/
+# Ignore user-specific files for Visual Studio
+*.user
+*.userosscache
+*.suo
+*.userprefs
 
-*/.bin/
-
-*/.obj/
+# Ignore all files that start with __azurite
+__azurite*
