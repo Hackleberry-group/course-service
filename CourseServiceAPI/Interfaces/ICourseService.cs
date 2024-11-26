@@ -1,4 +1,4 @@
-﻿using CourseServiceAPI.Models;
+﻿using CourseServiceAPI.Models.Course;
 
 namespace CourseServiceAPI.Interfaces;
 

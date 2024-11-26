@@ -2,6 +2,8 @@
 using CourseServiceAPI.Models.Exercise.DTOs;
 using CourseServiceAPI.Models.Topic;
 using CourseServiceAPI.Models.Topic.DTOs;
+using CourseServiceAPI.Models.Module;
+using CourseServiceAPI.Models.Module.DTOs;
 
 namespace CourseServiceAPI.Helpers;
 
@@ -47,6 +49,27 @@ public static class Mapper
             Name = topic.Name,
             ModuleId = topic.ModuleId,
             Order = topic.Order,
+        };
+    }
+
+    public static Module MapToModule(ModuleRequestDTO dto)
+    {
+        return new Module
+        {
+            Name = dto.Name,
+            Order = dto.Order,
+            CourseId = dto.CourseId,
+        };
+    }
+
+    public static ModuleResponseDTO MapToModuleResponseDto(Module module)
+    {
+        return new ModuleResponseDTO
+        {
+            Id = Guid.Parse(module.RowKey),
+            Name = module.Name,
+            Order = module.Order,
+            CourseId = module.CourseId
         };
     }
 }

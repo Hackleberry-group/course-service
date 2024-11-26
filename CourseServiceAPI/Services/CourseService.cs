@@ -1,5 +1,5 @@
 ﻿using CourseServiceAPI.Interfaces;
-using CourseServiceAPI.Models;
+using CourseServiceAPI.Models.Course;
 
 namespace CourseServiceAPI.Services;
 

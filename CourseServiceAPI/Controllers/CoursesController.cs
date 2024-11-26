@@ -1,5 +1,5 @@
 ﻿using CourseServiceAPI.Interfaces;
-using CourseServiceAPI.Models;
+using CourseServiceAPI.Models.Course;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseServiceAPI.Controllers

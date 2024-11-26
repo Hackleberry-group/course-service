@@ -2,7 +2,6 @@
 using CourseServiceAPI.Interfaces;
 using CourseServiceAPI.Models.Topic;
 using CourseServiceAPI.Models.Topic.DTOs;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseServiceAPI.Controllers;
