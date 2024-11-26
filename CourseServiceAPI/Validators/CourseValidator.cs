@@ -7,6 +7,6 @@ public class CourseValidator : AbstractValidator<Course>
 {
     public CourseValidator()
     {
-        RuleFor(x => x.Title).NotEmpty().WithMessage("Title is required");
+        RuleFor(x => x.Name).NotEmpty().WithMessage("Title is required");
     }
 }
