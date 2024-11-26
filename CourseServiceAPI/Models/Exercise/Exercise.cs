@@ -14,8 +14,6 @@ namespace CourseServiceAPI.Models.Exercise
 
         public ETag ETag { get; set; }
 
-        public Guid Id { get; set; }
-
         public int Order { get; set; }
 
         public bool IsTopicExam { get; set; }
@@ -27,8 +25,7 @@ namespace CourseServiceAPI.Models.Exercise
         public Exercise()
         {
             PartitionKey = EntityConstants.ExercisePartitionKey;
-            Id = Guid.NewGuid(); // Assign a new Guid value to the Id property
-            RowKey = Id.ToString();
+            RowKey = Guid.NewGuid().ToString(); // Assign a new Guid value to the Id property
         }
 
     }

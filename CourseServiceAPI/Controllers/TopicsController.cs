@@ -53,9 +53,8 @@ public class TopicsController : ControllerBase
         _logger.LogInformation("Updating topic with ID: {Id}", id);
 
         var topic = Mapper.MapToTopic(topicDto);
-        topic.Id = id;
-        topic.PartitionKey = EntityConstants.TopicPartitionKey;
         topic.RowKey = id.ToString();
+        topic.PartitionKey = EntityConstants.TopicPartitionKey;
 
         var updatedTopic = await _topicService.PutTopicByIdAsync(id, topic);
 

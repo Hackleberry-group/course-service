@@ -55,9 +55,8 @@ namespace CourseServiceAPI.Controllers
             _logger.LogInformation("Updating exercise with ID: {Id}", id);
 
             var exercise = Mapper.MapToExercise(exerciseDto);
-            exercise.Id = id;
-            exercise.PartitionKey = EntityConstants.ExercisePartitionKey;
             exercise.RowKey = id.ToString();
+            exercise.PartitionKey = EntityConstants.ExercisePartitionKey;
 
             var updatedExercise = await _exerciseService.PutExerciseByIdAsync(id, exercise);
 

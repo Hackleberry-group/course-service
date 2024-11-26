@@ -16,8 +16,6 @@ public class Topic : ITableEntity
 
     public ETag ETag { get; set; }
 
-    public Guid Id { get; set; }
-
     public string Name { get; set; }
 
     public Guid ModuleId { get; set; }
@@ -27,7 +25,6 @@ public class Topic : ITableEntity
     public Topic()
     {
         PartitionKey = EntityConstants.TopicPartitionKey;
-        Id = Guid.NewGuid();
-        RowKey = Id.ToString();
+        RowKey = Guid.NewGuid().ToString();
     }
 }
