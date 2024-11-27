@@ -12,6 +12,9 @@ namespace CourseServiceAPI.Validators
                 .NotEmpty().WithMessage("Topic ID is required.")
                 .Must(BeAValidGuid).WithMessage("Topic ID must be a valid GUID.");
 
+            RuleFor(x => x.Order)
+                .GreaterThan(0).WithMessage("Order must be greater than 0.");
+
             RuleFor(x => x.IsTopicExam)
                 .NotNull().WithMessage("IsTopicExam must be specified.");
         }
@@ -26,8 +29,26 @@ namespace CourseServiceAPI.Validators
     {
         public ExerciseCompletionValidator()
         {
-            RuleFor(completion => completion.ExerciseId).NotEmpty().WithMessage("Exercise ID is required.");
-            RuleForEach(completion => completion.AnsweredQuestions).SetValidator(new AnsweredQuestionListValidator());
+            RuleFor(completion => completion.ExerciseId)
+                .NotEmpty().WithMessage("Exercise ID is required.")
+                .Must(BeAValidGuid).WithMessage("Exercise ID must be a valid GUID.");
+
+            RuleFor(completion => completion.AnsweredQuestions)
+                .NotEmpty().WithMessage("Answered questions are required.")
+                .Must(ContainValidAnsweredQuestions).WithMessage("Answered questions must contain valid entries.");
+
+            RuleForEach(completion => completion.AnsweredQuestions)
+                .SetValidator(new AnsweredQuestionListValidator());
+        }
+
+        private bool BeAValidGuid(Guid value)
+        {
+            return value != Guid.Empty;
+        }
+
+        private bool ContainValidAnsweredQuestions(List<List<AnsweredQuestion>> answeredQuestions)
+        {
+            return answeredQuestions != null && answeredQuestions.All(list => list != null && list.Any());
         }
     }
 
@@ -43,8 +64,18 @@ namespace CourseServiceAPI.Validators
     {
         public AnsweredQuestionValidator()
         {
-            RuleFor(answeredQuestion => answeredQuestion.QuestionId).NotEmpty().WithMessage("Question ID is required.");
-            RuleFor(answeredQuestion => answeredQuestion.AnswerId).NotEmpty().WithMessage("Answer ID is required.");
+            RuleFor(answeredQuestion => answeredQuestion.QuestionId)
+                .NotEmpty().WithMessage("Question ID is required.")
+                .Must(BeAValidGuid).WithMessage("Question ID must be a valid GUID.");
+
+            RuleFor(answeredQuestion => answeredQuestion.AnswerId)
+                .NotEmpty().WithMessage("Answer ID is required.")
+                .Must(BeAValidGuid).WithMessage("Answer ID must be a valid GUID.");
+        }
+
+        private bool BeAValidGuid(Guid value)
+        {
+            return value != Guid.Empty;
         }
     }
 }

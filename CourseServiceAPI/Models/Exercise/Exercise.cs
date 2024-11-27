@@ -14,11 +14,15 @@ namespace CourseServiceAPI.Models.Exercise
 
         public ETag ETag { get; set; }
 
+
         public Guid Id { get; set; }
+
 
         public int Order { get; set; }
 
+
         public bool IsTopicExam { get; set; }
+
 
         public Guid TopicId { get; set; }
 
@@ -27,14 +31,37 @@ namespace CourseServiceAPI.Models.Exercise
         public Exercise()
         {
             PartitionKey = EntityConstants.ExercisePartitionKey;
-            Id = Guid.NewGuid(); // Assign a new Guid value to the Id property
+            Id = Guid.NewGuid();
             RowKey = Id.ToString();
         }
-
     }
 
+    // Placeholder
+    public class AnsweredQuestion
+    {
+        public Guid QuestionId { get; set; }
+        public Guid AnswerId { get; set; }
+    }
+
+    public class ExerciseCompletion
+    {
+        public Guid ExerciseId { get; set; }
+        public List<List<AnsweredQuestion>> AnsweredQuestions { get; set; }
+    }
+    
+    // Placeholder
+    public class Answer
+    {
+        public Guid AnswerId { get; set; }
+        public string Text { get; set; }
+    }
+
+    // Placeholder
     public class Question
     {
-        // Define properties for the Question class as needed
+        public Guid QuestionId { get; set; }
+        public string Text { get; set; }
+        public List<Answer> Answers { get; set; }
+        public Guid CorrectAnswerId { get; set; }
     }
 }

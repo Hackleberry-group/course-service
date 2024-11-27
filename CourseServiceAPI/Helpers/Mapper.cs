@@ -47,6 +47,7 @@ public static class Mapper
             Name = topic.Name,
             ModuleId = topic.ModuleId,
             Order = topic.Order,
+            Exercises = topic.Exercises?.Select(MapToExerciseResponseDto).ToList()
         };
     }
 }

@@ -10,12 +10,10 @@ namespace CourseServiceAPI.Controllers
     [Route("[controller]")]
     public class ExerciseController : ControllerBase
     {
-        private readonly ILogger<ExerciseController> _logger;
         private readonly IExerciseService _exerciseService;
 
-        public ExerciseController(ILogger<ExerciseController> logger, IExerciseService exerciseService)
+        public ExerciseController(IExerciseService exerciseService)
         {
-            _logger = logger;
             _exerciseService = exerciseService;
         }
 
@@ -52,8 +50,6 @@ namespace CourseServiceAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Exercise>> PutExerciseById(Guid id, [FromBody] ExerciseRequestDTO exerciseDto)
         {
-            _logger.LogInformation("Updating exercise with ID: {Id}", id);
-
             var exercise = Mapper.MapToExercise(exerciseDto);
             exercise.Id = id;
             exercise.PartitionKey = EntityConstants.ExercisePartitionKey;
@@ -67,19 +63,18 @@ namespace CourseServiceAPI.Controllers
         }
 
 
-        [HttpPost("{id}/complete")]
-        public async Task<IActionResult> CompleteExercise(Guid id, [FromBody] List<List<AnsweredQuestion>> answeredQuestions)
+        [HttpPost("complete-exercise")]
+        public async Task<IActionResult> CompleteExercise([FromBody] ExerciseCompletion completion)
         {
-            _logger.LogInformation("Completing exercise with ID: {Id}", id);
-            await _exerciseService.CompleteExerciseAsync(id, answeredQuestions);
-            return NoContent();
+            var result = await _exerciseService.CompleteExerciseAsync(completion.ExerciseId, completion.AnsweredQuestions);
+            return Ok(result);
         }
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExercise(Guid id)
         {
             await _exerciseService.DeleteExerciseAsync(id);
-            _logger.LogInformation("Deleted exercise with ID: {Id}", id);
             return NoContent();
         }
     }

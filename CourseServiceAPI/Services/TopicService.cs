@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
-using CourseServiceAPI.Helpers;
+﻿using CourseServiceAPI.Helpers;
 using CourseServiceAPI.Interfaces;
 using CourseServiceAPI.Interfaces.Commands;
 using CourseServiceAPI.Interfaces.Queries;
+using CourseServiceAPI.Models.Exercise;
 using CourseServiceAPI.Models.Topic;
 
 namespace CourseServiceAPI.Services;
@@ -20,6 +20,7 @@ public class TopicService : ITopicService
         _tableStorageQueryService = tableStorageQueryService;
         _tableStorageCommandService = tableStorageCommandService;
     }
+
     public async Task<IEnumerable<Topic>> GetTopicsAsync()
     {
         return await _tableStorageQueryService.GetAllEntitiesAsync<Topic>(TableName);
@@ -34,8 +35,18 @@ public class TopicService : ITopicService
 
     public async Task<Topic> GetTopicByIdAsync(Guid id)
     {
-        return await _tableStorageQueryService.GetEntityAsync<Topic>(TableName, PartitionKey, id.ToString());
+        var topic = await _tableStorageQueryService.GetEntityAsync<Topic>(TableName, PartitionKey, id.ToString());
+
+        var filter = id.ToFilter<Exercise>("TopicId");
+        var exercises =
+            await _tableStorageQueryService.GetEntitiesByFilterAsync<Exercise>(EntityConstants.ExerciseTableName,
+                filter);
+
+        topic.Exercises = exercises.ToList();
+
+        return topic;
     }
+
 
     public async Task<Topic> PutTopicByIdAsync(Guid id, Topic topic)
     {

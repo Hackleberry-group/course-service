@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using Azure;
+﻿using Azure;
 using Azure.Data.Tables;
 using CourseServiceAPI.Helpers;
 
@@ -23,6 +21,8 @@ public class Topic : ITableEntity
     public Guid ModuleId { get; set; }
 
     public int Order { get; set; }
+
+    public List<Exercise.Exercise>? Exercises { get; set; }
 
     public Topic()
     {

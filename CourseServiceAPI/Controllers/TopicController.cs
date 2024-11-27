@@ -11,12 +11,10 @@ namespace CourseServiceAPI.Controllers;
 [Route("[controller]")]
 public class TopicController : ControllerBase
 {
-    private readonly ILogger<TopicController> _logger;
     private readonly ITopicService _topicService;
 
-    public TopicController(ILogger<TopicController> logger, ITopicService topicService)
+    public TopicController(ITopicService topicService)
     {
-        _logger = logger;
         _topicService = topicService;
     }
 
@@ -50,8 +48,6 @@ public class TopicController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<Topic>> PutTopicById(Guid id, [FromBody] TopicRequestDTO topicDto)
     {
-        _logger.LogInformation("Updating topic with ID: {Id}", id);
-
         var topic = Mapper.MapToTopic(topicDto);
         topic.Id = id;
         topic.PartitionKey = EntityConstants.TopicPartitionKey;
@@ -67,7 +63,6 @@ public class TopicController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteTopic(Guid id)
     {
-        _logger.LogInformation("Deleting topic with ID: {Id}", id);
         await _topicService.DeleteTopicAsync(id);
         return NoContent();
     }
