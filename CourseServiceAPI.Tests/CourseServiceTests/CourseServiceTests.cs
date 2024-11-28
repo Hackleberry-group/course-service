@@ -1,5 +1,5 @@
 ﻿using CourseServiceAPI.Interfaces;
-using CourseServiceAPI.Models;
+using CourseServiceAPI.Models.Course;
 using CourseServiceAPI.Services;
 
 namespace CourseServiceAPI.Tests.CourseServiceTests;
@@ -27,15 +27,15 @@ public class CourseServiceTests
     [Test]
     public void CreateCourse_ShouldReturnCreatedCourse()
     {
-        var course = new Course { Id = 1, Title = "New Course" };
+        var course = new Course { RowKey = Guid.NewGuid().ToString(), Name = "New Course" };
 
         var result = _courseService.CreateCourse(course);
 
         Assert.Multiple(() =>
         {
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Id, Is.EqualTo(course.Id));
-            Assert.That(result.Title, Is.EqualTo(course.Title));
+            Assert.That(result.RowKey, Is.EqualTo(course.RowKey));
+            Assert.That(result.Name, Is.EqualTo(course.Name));
         });
     }
 }
