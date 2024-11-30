@@ -1,5 +1,6 @@
 ﻿using CourseServiceAPI.Interfaces;
 using CourseServiceAPI.Models.Course;
+using CourseServiceAPI.Models.Module.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseServiceAPI.Controllers
@@ -18,10 +19,31 @@ namespace CourseServiceAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Course> Get()
+        public IEnumerable<Course> GetCourses()
         {
             return _courseService.GetCourses();
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<Course> GetCourseById(Guid id)
+        {
+            var course = _courseService.GetCourseById(id);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(course);
+        }
+
+        [HttpGet("{id}/modules")]
+        public Task<IEnumerable<ModuleResponseDTO>> GetModulesByCourseId(Guid courseId)
+        {
+            var modules = await _moduleService.GetModulesByCourseIdAsync(courseId);
+            return modules.Select(Mapper.MapToModuleResponseDto);
+        }
+
 
         [HttpPost]
         public IActionResult Post([FromBody] Course course)

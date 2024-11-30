@@ -12,17 +12,17 @@ using CourseServiceAPI.Services.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add the TableServiceClient to the services collection
 builder.Services.AddSingleton(new TableServiceClient(builder.Configuration["Azure:Storage:ConnectionString"]));
+
 builder.Services.AddScoped<ITableStorageCommandService, TableStorageCommandService>();
 builder.Services.AddScoped<ITableStorageQueryService, TableStorageQueryService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
-builder.Services.AddScoped<IExerciseService, ExerciseService>();
+builder.Services.AddScoped<IModuleService, ModuleService>();
 builder.Services.AddScoped<ITopicService, TopicService>();
+builder.Services.AddScoped<IExerciseService, ExerciseService>();
 
 // Add services to the container.
 builder.Services.AddControllers(options =>
@@ -45,7 +45,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<ValidationExceptionMiddleware>(); // Ensure this is before UseAuthorization
+app.UseMiddleware<ValidationExceptionMiddleware>();
 
 app.UseAuthorization();
 

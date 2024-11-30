@@ -27,8 +27,7 @@ public class TopicService : ITopicService
 
     public async Task<Topic> CreateTopicAsync(Topic topic)
     {
-        await _tableStorageCommandService.AddEntityAsync(TableName, topic);
-        return topic;
+        return await _tableStorageCommandService.AddEntityAsync(TableName, topic);
     }
 
 
@@ -41,8 +40,8 @@ public class TopicService : ITopicService
     {
         topic.PartitionKey = PartitionKey;
         topic.RowKey = id.ToString();
-        await _tableStorageCommandService.UpdateEntityAsync(TableName, topic);
-        return topic;
+        
+        return await _tableStorageCommandService.UpdateEntityAsync(TableName, topic);
     }
 
     public async Task DeleteTopicAsync(Guid id)
