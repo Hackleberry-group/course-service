@@ -1,18 +1,55 @@
-﻿using CourseServiceAPI.Interfaces;
+﻿using CourseServiceAPI.Helpers;
+using CourseServiceAPI.Interfaces;
+using CourseServiceAPI.Interfaces.Commands;
+using CourseServiceAPI.Interfaces.Queries;
 using CourseServiceAPI.Models.Course;
 
-namespace CourseServiceAPI.Services;
-
-public class CourseService : ICourseService
+namespace CourseServiceAPI.Services
 {
-    public IEnumerable<Course> GetCourses()
+    public class CourseService : ICourseService
     {
-        throw new NotImplementedException();
-    }
+        private readonly ITableStorageQueryService _tableStorageQueryService;
+        private readonly ITableStorageCommandService _tableStorageCommandService;
 
-    public Course CreateCourse(Course course)
-    {
-        // Logic to create a course can be added here
-        return course;
+        private const string TableName = EntityConstants.CourseTableName;
+        private const string PartitionKey = EntityConstants.CoursePartitionKey;
+
+        public CourseService(ITableStorageQueryService tableStorageQueryService,
+            ITableStorageCommandService tableStorageCommandService)
+        {
+            _tableStorageQueryService = tableStorageQueryService;
+            _tableStorageCommandService = tableStorageCommandService;
+        }
+
+        public async Task<IEnumerable<Course>> GetCoursesAsync()
+        {
+            return await _tableStorageQueryService.GetAllEntitiesAsync<Course>(TableName);
+        }
+
+        public async Task<Course> GetCourseByIdAsync(Guid id)
+        {
+            return await _tableStorageQueryService.GetEntityAsync<Course>(TableName, PartitionKey, id.ToString());
+        }
+
+        public async Task<Course> CreateCourseAsync(Course course)
+        {
+            return await _tableStorageCommandService.AddEntityAsync(TableName, course);
+        }
+
+        public async Task<Course> PutCourseByIdAsync(Guid id, Course course)
+        {
+            course.PartitionKey = PartitionKey;
+            course.RowKey = id.ToString();
+
+            return await _tableStorageCommandService.UpdateEntityAsync(TableName, course);
+        }
+
+        public async Task DeleteCourseAsync(Guid id)
+        {
+            await _tableStorageQueryService.DeleteEntityAsync(TableName, PartitionKey, id.ToString());
+            // TODO: Call user service to delete the group-course link
+            // TODO: Call module service to remove the modules' course id
+        }
     }
 }
+
