@@ -6,5 +6,4 @@ public class ExerciseResponseDTO
     public int Order { get; set; }
     public bool IsTopicExam { get; set; }
     public Guid TopicId { get; set; }
-    public List<Question> Questions { get; set; }
 }

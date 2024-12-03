@@ -3,6 +3,7 @@ using CourseServiceAPI.Interfaces;
 using CourseServiceAPI.Interfaces.Commands;
 using CourseServiceAPI.Interfaces.Queries;
 using CourseServiceAPI.Models.Exercise;
+using CourseServiceAPI.Models.Exercise.DTOs;
 
 namespace CourseServiceAPI.Services
 {
@@ -37,27 +38,12 @@ namespace CourseServiceAPI.Services
             return exercise;
         }
 
-
         public async Task<Exercise> CreateExerciseAsync(Exercise exercise)
         {
+            exercise.PartitionKey = PartitionKey;
+            exercise.RowKey = Guid.NewGuid().ToString();
             await _tableStorageCommandService.AddEntityAsync(TableName, exercise);
             return exercise;
-        }
-
-        public async Task CompleteExerciseAsync(Guid exerciseId, List<List<AnsweredQuestion>> answeredQuestions)
-        {
-            // For now add a dummy completion with the exerciseId and answeredQuestions without any database logic
-            var completion = new ExerciseCompletion { ExerciseId = exerciseId, AnsweredQuestions = answeredQuestions };
-
-            foreach (var question in completion.AnsweredQuestions)
-            {
-                Console.WriteLine("Question:");
-                foreach (var answeredQuestion in question)
-                {
-                    Console.WriteLine($"Answered question: {answeredQuestion.QuestionId}");
-                    Console.WriteLine($"Answer: {answeredQuestion.AnswerId}");
-                }
-            }
         }
 
         public async Task DeleteExerciseAsync(Guid id)

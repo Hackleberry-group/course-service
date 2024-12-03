@@ -1,6 +1,4 @@
-﻿using CourseServiceAPI.Models.Exercise.DTOs;
-
-namespace CourseServiceAPI.Models.Topic.DTOs;
+﻿namespace CourseServiceAPI.Models.Topic.DTOs;
 
 public class TopicRequestDTO
 {

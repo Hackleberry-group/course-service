@@ -22,11 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CourseServiceTests\" />
-    <Folder Include="ExerciseServiceTests\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CourseServiceAPI\CourseServiceAPI.csproj" />
   </ItemGroup>
 
