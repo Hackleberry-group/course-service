@@ -3,7 +3,8 @@ using CourseServiceAPI.Interfaces;
 using CourseServiceAPI.Interfaces.Commands;
 using CourseServiceAPI.Interfaces.Queries;
 using CourseServiceAPI.Models.Exercise;
-using CourseServiceAPI.Models.Exercise.DTOs;
+using HackleberrySharedModels.Requests;
+using MassTransit;
 
 namespace CourseServiceAPI.Services
 {
@@ -11,13 +12,15 @@ namespace CourseServiceAPI.Services
     {
         private readonly ITableStorageQueryService _tableStorageQueryService;
         private readonly ITableStorageCommandService _tableStorageCommandService;
+        private readonly IPublishEndpoint _publishEndpoint;
         private const string TableName = EntityConstants.ExerciseTableName;
         private const string PartitionKey = EntityConstants.ExercisePartitionKey;
 
-        public ExerciseService(ITableStorageQueryService tableStorageQueryService, ITableStorageCommandService tableStorageCommandService)
+        public ExerciseService(ITableStorageQueryService tableStorageQueryService, ITableStorageCommandService tableStorageCommandService, IPublishEndpoint publishEndpoint)
         {
             _tableStorageQueryService = tableStorageQueryService;
             _tableStorageCommandService = tableStorageCommandService;
+            _publishEndpoint = publishEndpoint;
         }
 
         public async Task<IEnumerable<Exercise>> GetExercisesAsync()
@@ -49,6 +52,14 @@ namespace CourseServiceAPI.Services
         public async Task DeleteExerciseAsync(Guid id)
         {
             await _tableStorageQueryService.DeleteEntityAsync(TableName, PartitionKey, id.ToString());
+
+            await PublishExerciseDeletedEventAsync(id);
         }
+
+        public async Task PublishExerciseDeletedEventAsync(Guid id)
+        {
+            var exerciseDelete = new ExerciseDelete { ExerciseId = id };
+            await _publishEndpoint.Publish(exerciseDelete);
+        } 
     }
 }

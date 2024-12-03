@@ -2,6 +2,7 @@
 using CourseServiceAPI.Interfaces.Queries;
 using CourseServiceAPI.Models.Exercise;
 using CourseServiceAPI.Services;
+using MassTransit;
 using NSubstitute;
 
 namespace CourseServiceAPI.Tests.CourseServiceTests;
@@ -11,6 +12,7 @@ public class ExerciseServiceTests
 {
     private ITableStorageQueryService _tableStorageQueryService;
     private ITableStorageCommandService _tableStorageCommandService;
+    private IPublishEndpoint _publishEndpoint;
     private ExerciseService _exerciseService;
 
     [SetUp]
@@ -18,7 +20,9 @@ public class ExerciseServiceTests
     {
         _tableStorageQueryService = Substitute.For<ITableStorageQueryService>();
         _tableStorageCommandService = Substitute.For<ITableStorageCommandService>();
-        _exerciseService = new ExerciseService(_tableStorageQueryService, _tableStorageCommandService);
+        _publishEndpoint = Substitute.For<IPublishEndpoint>();
+
+        _exerciseService = new ExerciseService(_tableStorageQueryService, _tableStorageCommandService, _publishEndpoint);
     }
 
     [Test]
