@@ -26,8 +26,8 @@ namespace CourseServiceAPI.Tests.ControllerTests
         {
             var topics = new List<Topic>
             {
-                new() { Id = Guid.NewGuid(), Name = "Topic 1" },
-                new() { Id = Guid.NewGuid(), Name = "Topic 2" }
+                new() { RowKey = Guid.NewGuid().ToString(), Name = "Topic 1" },
+                new() { RowKey = Guid.NewGuid().ToString(), Name = "Topic 2" }
             };
             _topicService.GetTopicsAsync().Returns(topics);
 
@@ -44,7 +44,7 @@ namespace CourseServiceAPI.Tests.ControllerTests
         public async Task GetTopicById_ShouldReturnTopic()
         {
             var topicId = Guid.NewGuid();
-            var topic = new Topic { Id = topicId, Name = "Topic 1" };
+            var topic = new Topic { RowKey = topicId.ToString(), Name = "Topic 1" };
             _topicService.GetTopicByIdAsync(topicId).Returns(topic);
 
             var result = await _topicController.GetTopicById(topicId);
@@ -64,7 +64,7 @@ namespace CourseServiceAPI.Tests.ControllerTests
             var topicDto = new TopicRequestDTO { ModuleId = Guid.NewGuid().ToString(), Order = 1, Name = "Topic" };
             var topic = Mapper.MapToTopic(topicDto);
             var createdTopic = topic;
-            createdTopic.Id = Guid.NewGuid();
+            createdTopic.RowKey = Guid.NewGuid().ToString();
             _topicService.CreateTopicAsync(Arg.Any<Topic>()).Returns(createdTopic);
 
             var result = await _topicController.CreateTopic(topicDto);
@@ -84,7 +84,7 @@ namespace CourseServiceAPI.Tests.ControllerTests
             var topicId = Guid.NewGuid();
             var topicDto = new TopicRequestDTO { ModuleId = Guid.NewGuid().ToString(), Order = 1, Name = "Updated Topic" };
             var topic = Mapper.MapToTopic(topicDto);
-            topic.Id = topicId;
+            topic.RowKey = topicId.ToString();
             _topicService.PutTopicByIdAsync(topicId, Arg.Any<Topic>()).Returns(topic);
 
             var result = await _topicController.PutTopicById(topicId, topicDto);

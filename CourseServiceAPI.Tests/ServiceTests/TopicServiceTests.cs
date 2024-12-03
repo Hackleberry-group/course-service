@@ -31,8 +31,8 @@ public class TopicServiceTests
     {
         var topics = new List<Topic>
         {
-            new() { Id = Guid.NewGuid(), Name = "Topic 1", ModuleId = Guid.NewGuid(), Order = 1 },
-            new() { Id = Guid.NewGuid(), Name = "Topic 2", ModuleId = Guid.NewGuid(), Order = 2 }
+            new() { RowKey = Guid.NewGuid().ToString(), Name = "Topic 1", ModuleId = Guid.NewGuid(), Order = 1 },
+            new() { RowKey = Guid.NewGuid().ToString(), Name = "Topic 2", ModuleId = Guid.NewGuid(), Order = 2 }
         };
         _tableStorageQueryService.GetAllEntitiesAsync<Topic>(Arg.Any<string>()).Returns(topics);
 
@@ -49,7 +49,7 @@ public class TopicServiceTests
     [Test]
     public async Task CreateTopicAsync_ShouldAddTopic()
     {
-        var topic = new Topic { Id = Guid.NewGuid(), Name = "New Topic", ModuleId = Guid.NewGuid(), Order = 1 };
+        var topic = new Topic { RowKey = Guid.NewGuid().ToString(), Name = "New Topic", ModuleId = Guid.NewGuid(), Order = 1 };
 
         var result = await _topicService.CreateTopicAsync(topic);
 
@@ -64,11 +64,11 @@ public class TopicServiceTests
     public async Task GetTopicByIdAsync_ShouldReturnTopicWithExercises()
     {
         var topicId = Guid.NewGuid();
-        var topic = new Topic { Id = topicId, Name = "Topic", ModuleId = Guid.NewGuid(), Order = 1 };
+        var topic = new Topic { RowKey = topicId.ToString(), Name = "Topic", ModuleId = Guid.NewGuid(), Order = 1 };
         var exercises = new List<Exercise>
         {
-            new() { Id = Guid.NewGuid(), Order = 1, IsTopicExam = false, TopicId = topicId },
-            new() { Id = Guid.NewGuid(), Order = 2, IsTopicExam = true, TopicId = topicId }
+            new() { RowKey = Guid.NewGuid().ToString(), Order = 1, IsTopicExam = false, TopicId = topicId },
+            new() { RowKey = Guid.NewGuid().ToString(), Order = 2, IsTopicExam = true, TopicId = topicId }
         };
         _tableStorageQueryService.GetEntityAsync<Topic>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
             .Returns(topic);
@@ -80,7 +80,7 @@ public class TopicServiceTests
         Assert.Multiple(() =>
         {
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Id, Is.EqualTo(topicId));
+            Assert.That(result.RowKey, Is.EqualTo(topicId.ToString())); // Compare to string representation of topicId
             Assert.That(result.Exercises.Count, Is.EqualTo(2));
             Assert.That(result.Exercises, Is.EqualTo(exercises));
         });
@@ -90,7 +90,7 @@ public class TopicServiceTests
     public async Task PutTopicByIdAsync_ShouldUpdateTopic()
     {
         var topicId = Guid.NewGuid();
-        var topic = new Topic { Id = topicId, Name = "Updated Topic", ModuleId = Guid.NewGuid(), Order = 1 };
+        var topic = new Topic { RowKey = topicId.ToString(), Name = "Updated Topic", ModuleId = Guid.NewGuid(), Order = 1 };
 
         var result = await _topicService.PutTopicByIdAsync(topicId, topic);
 

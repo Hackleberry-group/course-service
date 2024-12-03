@@ -26,8 +26,8 @@ public class ExerciseServiceTests
     {
         var exercises = new List<Exercise>
         {
-            new() { Id = Guid.NewGuid(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() },
-            new() { Id = Guid.NewGuid(), Order = 2, IsTopicExam = true, TopicId = Guid.NewGuid() }
+            new() { RowKey = Guid.NewGuid().ToString(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() },
+            new() { RowKey = Guid.NewGuid().ToString(), Order = 2, IsTopicExam = true, TopicId = Guid.NewGuid() }
         };
         _tableStorageQueryService.GetAllEntitiesAsync<Exercise>(Arg.Any<string>()).Returns(exercises);
 
@@ -45,7 +45,7 @@ public class ExerciseServiceTests
     public async Task GetExerciseByIdAsync_ShouldReturnExercise()
     {
         var exerciseId = Guid.NewGuid();
-        var exercise = new Exercise { Id = exerciseId, Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
+        var exercise = new Exercise { RowKey = exerciseId.ToString(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
         _tableStorageQueryService.GetEntityAsync<Exercise>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
             .Returns(exercise);
 
@@ -57,7 +57,7 @@ public class ExerciseServiceTests
     [Test]
     public async Task CreateExerciseAsync_ShouldAddExercise()
     {
-        var exercise = new Exercise { Id = Guid.NewGuid(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
+        var exercise = new Exercise { RowKey = Guid.NewGuid().ToString(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
 
         var result = await _exerciseService.CreateExerciseAsync(exercise);
 
@@ -72,7 +72,7 @@ public class ExerciseServiceTests
     public async Task PutExerciseByIdAsync_ShouldUpdateExercise()
     {
         var exerciseId = Guid.NewGuid();
-        var exercise = new Exercise { Id = exerciseId, Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
+        var exercise = new Exercise { RowKey = exerciseId.ToString(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
 
         var result = await _exerciseService.PutExerciseByIdAsync(exerciseId, exercise);
 

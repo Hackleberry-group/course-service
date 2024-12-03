@@ -33,18 +33,11 @@ public class TopicController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("{id}/exercises")]
-    public async Task<IEnumerable<ExerciseResponseDTO>> GetExercisesByTopicId(Guid id)
-    {
-        var exercises = await _topicService.GetExercisesByTopicIdAsync(id);
-        return exercises.Select(Mapper.MapToExerciseResponseDto);
-    }
-
     [HttpPost]
     public async Task<ActionResult<Topic>> CreateTopic([FromBody] TopicRequestDTO topicDto)
     {
         var topic = Mapper.MapToTopic(topicDto);
-        topic.Id = Guid.NewGuid();
+        topic.RowKey = Guid.NewGuid().ToString();
         var createdTopic = await _topicService.CreateTopicAsync(topic);
         var createdTopicDto = Mapper.MapToTopicResponseDto(createdTopic);
         return CreatedAtAction(nameof(GetTopicById), new { id = createdTopicDto.Id }, createdTopicDto);
@@ -54,7 +47,7 @@ public class TopicController : ControllerBase
     public async Task<ActionResult<Topic>> PutTopicById(Guid id, [FromBody] TopicRequestDTO topicDto)
     {
         var topic = Mapper.MapToTopic(topicDto);
-        topic.Id = id;
+        topic.RowKey = id.ToString();
         var updatedTopic = await _topicService.PutTopicByIdAsync(id, topic);
         var response = Mapper.MapToTopicResponseDto(updatedTopic);
         return Ok(response);

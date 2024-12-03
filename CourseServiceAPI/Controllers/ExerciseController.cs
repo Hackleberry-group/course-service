@@ -38,17 +38,17 @@ namespace CourseServiceAPI.Controllers
         public async Task<ActionResult<Exercise>> CreateExercise([FromBody] ExerciseRequestDTO exerciseDto)
         {
             var exercise = Mapper.MapToExercise(exerciseDto);
-            exercise.Id = Guid.NewGuid();
+            exercise.RowKey = Guid.NewGuid().ToString();
             var createdExercise = await _exerciseService.CreateExerciseAsync(exercise);
             var response = Mapper.MapToExerciseResponseDto(createdExercise);
-            return CreatedAtAction(nameof(GetExerciseById), new { id = createdExercise.Id }, response);
+            return CreatedAtAction(nameof(GetExerciseById), new { id = createdExercise.RowKey }, response);
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Exercise>> PutExerciseById(Guid id, [FromBody] ExerciseRequestDTO exerciseDto)
         {
             var exercise = Mapper.MapToExercise(exerciseDto);
-            exercise.Id = id;
+            exercise.RowKey = id.ToString();
             var updatedExercise = await _exerciseService.PutExerciseByIdAsync(id, exercise);
             var response = Mapper.MapToExerciseResponseDto(updatedExercise);
             return Ok(response);

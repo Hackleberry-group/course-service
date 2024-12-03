@@ -26,8 +26,8 @@ namespace CourseServiceAPI.Tests.ControllerTests
         {
             var exercises = new List<Exercise>
             {
-                new() { Id = Guid.NewGuid(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() },
-                new() { Id = Guid.NewGuid(), Order = 2, IsTopicExam = true, TopicId = Guid.NewGuid() }
+                new() { RowKey = Guid.NewGuid().ToString(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() },
+                new() { RowKey = Guid.NewGuid().ToString(), Order = 2, IsTopicExam = true, TopicId = Guid.NewGuid() }
             };
             _exerciseService.GetExercisesAsync().Returns(exercises);
 
@@ -44,7 +44,7 @@ namespace CourseServiceAPI.Tests.ControllerTests
         public async Task GetExerciseById_ShouldReturnExercise()
         {
             var exerciseId = Guid.NewGuid();
-            var exercise = new Exercise { Id = exerciseId, Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
+            var exercise = new Exercise { RowKey = exerciseId.ToString(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
             _exerciseService.GetExerciseByIdAsync(exerciseId).Returns(exercise);
 
             var result = await _exerciseController.GetExerciseById(exerciseId);
@@ -64,7 +64,7 @@ namespace CourseServiceAPI.Tests.ControllerTests
             var exerciseDto = new ExerciseRequestDTO { TopicId = Guid.NewGuid().ToString(), Order = 1, IsTopicExam = true };
             var exercise = Mapper.MapToExercise(exerciseDto);
             var createdExercise = exercise;
-            createdExercise.Id = Guid.NewGuid();
+            createdExercise.RowKey = Guid.NewGuid().ToString();
             _exerciseService.CreateExerciseAsync(Arg.Any<Exercise>()).Returns(createdExercise);
 
             var result = await _exerciseController.CreateExercise(exerciseDto);
@@ -84,7 +84,7 @@ namespace CourseServiceAPI.Tests.ControllerTests
             var exerciseId = Guid.NewGuid();
             var exerciseDto = new ExerciseRequestDTO { TopicId = Guid.NewGuid().ToString(), Order = 1, IsTopicExam = true };
             var exercise = Mapper.MapToExercise(exerciseDto);
-            exercise.Id = exerciseId;
+            exercise.RowKey = exerciseId.ToString();
             _exerciseService.PutExerciseByIdAsync(exerciseId, Arg.Any<Exercise>()).Returns(exercise);
 
             var result = await _exerciseController.PutExerciseById(exerciseId, exerciseDto);

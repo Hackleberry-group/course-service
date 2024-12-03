@@ -11,7 +11,7 @@ public static class Mapper
     {
         return new ExerciseResponseDTO
         {
-            Id = exercise.Id,
+            Id = Guid.Parse(exercise.RowKey),
             Order = exercise.Order,
             IsTopicExam = exercise.IsTopicExam,
             TopicId = exercise.TopicId,
@@ -42,7 +42,7 @@ public static class Mapper
     {
         return new TopicResponseDto
         {
-            Id = topic.Id,
+            Id = Guid.Parse(topic.RowKey),
             Name = topic.Name,
             ModuleId = topic.ModuleId,
             Order = topic.Order,

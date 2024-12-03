@@ -10,13 +10,6 @@ public class Topic : ITableEntity
     public string RowKey { get; set; }
     public DateTimeOffset? Timestamp { get; set; }
     public ETag ETag { get; set; }
-
-    public Guid Id
-    {
-        get => Guid.Parse(RowKey);
-        set => RowKey = value.ToString();
-    }
-
     public string Name { get; set; }
     public Guid ModuleId { get; set; }
     public int Order { get; set; }
@@ -25,6 +18,6 @@ public class Topic : ITableEntity
     public Topic()
     {
         PartitionKey = EntityConstants.TopicPartitionKey;
-        Id = Guid.NewGuid();
+        RowKey = Guid.NewGuid().ToString();
     }
 }

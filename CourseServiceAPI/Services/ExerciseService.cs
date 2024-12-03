@@ -41,7 +41,7 @@ namespace CourseServiceAPI.Services
         public async Task<Exercise> CreateExerciseAsync(Exercise exercise)
         {
             exercise.PartitionKey = PartitionKey;
-            exercise.Id = Guid.NewGuid();
+            exercise.RowKey = Guid.NewGuid().ToString();
             await _tableStorageCommandService.AddEntityAsync(TableName, exercise);
             return exercise;
         }

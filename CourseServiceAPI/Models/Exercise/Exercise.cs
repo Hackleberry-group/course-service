@@ -10,18 +10,18 @@ namespace CourseServiceAPI.Models.Exercise
         public string RowKey { get; set; }
         public DateTimeOffset? Timestamp { get; set; }
         public ETag ETag { get; set; }
-        public Guid Id
+/*        public Guid Id
         {
             get => Guid.Parse(RowKey);
             set => RowKey = value.ToString();
-        }
+        }*/
         public int Order { get; set; }
         public bool IsTopicExam { get; set; }
         public Guid TopicId { get; set; }
         public Exercise()
         {
             PartitionKey = EntityConstants.ExercisePartitionKey;
-            Id = Guid.NewGuid();
+            RowKey = Guid.NewGuid().ToString();
         }
     }
 }
