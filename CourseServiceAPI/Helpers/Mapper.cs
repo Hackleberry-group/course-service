@@ -15,7 +15,6 @@ public static class Mapper
             Order = exercise.Order,
             IsTopicExam = exercise.IsTopicExam,
             TopicId = exercise.TopicId,
-            Questions = exercise.Questions
         };
     }
 

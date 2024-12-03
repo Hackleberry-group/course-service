@@ -18,27 +18,10 @@ namespace CourseServiceAPI.Models.Exercise
         public int Order { get; set; }
         public bool IsTopicExam { get; set; }
         public Guid TopicId { get; set; }
-        public List<Question> Questions { get; set; }
         public Exercise()
         {
             PartitionKey = EntityConstants.ExercisePartitionKey;
             Id = Guid.NewGuid();
         }
-    }
-    
-    // Placeholder
-    public class Answer
-    {
-        public Guid AnswerId { get; set; }
-        public string Text { get; set; }
-    }
-
-    // Placeholder
-    public class Question
-    {
-        public Guid QuestionId { get; set; }
-        public string Text { get; set; }
-        public List<Answer> Answers { get; set; }
-        public Guid CorrectAnswerId { get; set; }
     }
 }

@@ -25,6 +25,6 @@ public class Topic : ITableEntity
     public Topic()
     {
         PartitionKey = EntityConstants.TopicPartitionKey;
-        Id = Guid.NewGuid(); // This sets RowKey as well
+        Id = Guid.NewGuid();
     }
 }
