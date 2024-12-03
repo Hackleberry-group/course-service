@@ -1,5 +1,6 @@
 ﻿using CourseServiceAPI.Helpers;
 using CourseServiceAPI.Interfaces;
+using CourseServiceAPI.Models.Exercise.DTOs;
 using CourseServiceAPI.Models.Topic;
 using CourseServiceAPI.Models.Topic.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -34,6 +35,13 @@ public class TopicController : ControllerBase
         var response = Mapper.MapToTopicResponseDto(topic);
 
         return Ok(response);
+    }
+
+    [HttpGet("{id}/exercises")]
+    public async Task<IEnumerable<ExerciseResponseDTO>> GetExercisesByTopicId(Guid id)
+    {
+        var exercises = await _topicService.GetExercisesByTopicIdAsync(id);
+        return exercises.Select(Mapper.MapToExerciseResponseDto);
     }
 
     [HttpPost]

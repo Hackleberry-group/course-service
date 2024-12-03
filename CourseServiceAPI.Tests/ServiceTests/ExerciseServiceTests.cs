@@ -93,44 +93,4 @@ public class ExerciseServiceTests
         await _tableStorageQueryService.Received(1)
             .DeleteEntityAsync(Arg.Any<string>(), Arg.Any<string>(), exerciseId.ToString());
     }
-
-    [Test]
-    public async Task CompleteExerciseAsync_ShouldReturnCorrectResponse()
-    {
-        var exerciseId = Guid.NewGuid();
-        var exercise = new Exercise { Id = exerciseId, Questions = new List<Question>() };
-        _tableStorageQueryService.GetEntityAsync<Exercise>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
-            .Returns(exercise);
-
-        var answeredQuestions = new List<List<AnsweredQuestion>>
-        {
-            new()
-            {
-                new AnsweredQuestion
-                {
-                    QuestionId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                    AnswerId = Guid.Parse("00000000-0000-0000-0000-000000000001")
-                },
-                new AnsweredQuestion
-                {
-                    QuestionId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
-                    AnswerId = Guid.Parse("00000000-0000-0000-0000-000000000002")
-                }
-            }
-        };
-
-        var result = await _exerciseService.CompleteExerciseAsync(exerciseId, answeredQuestions);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.ExerciseId, Is.EqualTo(exerciseId));
-            Assert.That(result.QuestionsTotal, Is.EqualTo(2));
-            Assert.That(result.QuestionsCorrect, Is.EqualTo(2));
-            Assert.That(result.IsPassed, Is.True);
-            Assert.That(result.StreakMultiplier, Is.EqualTo(1.0));
-            Assert.That(result.XPEarned, Is.EqualTo(20));
-            Assert.That(result.CurrentUserXP, Is.EqualTo(1000));
-        });
-    }
 }

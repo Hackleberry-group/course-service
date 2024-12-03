@@ -61,16 +61,7 @@ namespace CourseServiceAPI.Controllers
 
             return Ok(response);
         }
-
-
-        [HttpPost("complete-exercise")]
-        public async Task<IActionResult> CompleteExercise([FromBody] ExerciseCompletion completion)
-        {
-            var result = await _exerciseService.CompleteExerciseAsync(completion.ExerciseId, completion.AnsweredQuestions);
-            return Ok(result);
-        }
-
-
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExercise(Guid id)
         {

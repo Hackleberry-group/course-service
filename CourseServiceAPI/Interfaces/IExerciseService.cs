@@ -9,8 +9,6 @@ namespace CourseServiceAPI.Interfaces
 
         Task<Exercise> CreateExerciseAsync(Exercise exercise);
 
-        Task<ExerciseCompletionResponse> CompleteExerciseAsync(Guid exerciseId, List<List<AnsweredQuestion>> answeredQuestions);
-
         Task<Exercise> GetExerciseByIdAsync(Guid id);
 
         Task<Exercise> PutExerciseByIdAsync(Guid id, Exercise exercise);

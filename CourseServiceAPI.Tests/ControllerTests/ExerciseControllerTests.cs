@@ -99,40 +99,6 @@ namespace CourseServiceAPI.Tests.ControllerTests
         }
 
         [Test]
-        public async Task CompleteExercise_ShouldReturnCompletionResponse()
-        {
-            var completion = new ExerciseCompletion
-            {
-                ExerciseId = Guid.NewGuid(),
-                AnsweredQuestions =
-                [
-                    [new AnsweredQuestion { QuestionId = Guid.NewGuid(), AnswerId = Guid.NewGuid() }]
-                ]
-            };
-            var completionResponse = new ExerciseCompletionResponse
-            {
-                ExerciseId = completion.ExerciseId,
-                QuestionsTotal = 1,
-                QuestionsCorrect = 1,
-                IsPassed = true,
-                StreakMultiplier = 1.0,
-                XPEarned = 10,
-                CurrentUserXP = 1000
-            };
-            _exerciseService.CompleteExerciseAsync(completion.ExerciseId, completion.AnsweredQuestions).Returns(completionResponse);
-
-            var result = await _exerciseController.CompleteExercise(completion);
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(result, Is.InstanceOf<OkObjectResult>());
-                var okResult = result as OkObjectResult;
-                Assert.That(okResult.StatusCode, Is.EqualTo(200));
-                Assert.That(okResult.Value, Is.InstanceOf<ExerciseCompletionResponse>());
-            });
-        }
-
-        [Test]
         public async Task DeleteExercise_ShouldReturnNoContent()
         {
             var exerciseId = Guid.NewGuid();

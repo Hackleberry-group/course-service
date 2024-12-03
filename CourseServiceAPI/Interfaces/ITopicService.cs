@@ -1,4 +1,5 @@
-﻿using CourseServiceAPI.Models.Topic;
+﻿using CourseServiceAPI.Models.Exercise;
+using CourseServiceAPI.Models.Topic;
 
 namespace CourseServiceAPI.Interfaces;
 
@@ -13,4 +14,6 @@ public interface ITopicService
     Task<Topic> PutTopicByIdAsync(Guid id, Topic topic);
 
     Task DeleteTopicAsync(Guid id);
+
+    Task<IEnumerable<Exercise>> GetExercisesByTopicIdAsync(Guid topicId);
 }

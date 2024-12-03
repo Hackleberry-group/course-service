@@ -35,19 +35,6 @@ namespace CourseServiceAPI.Models.Exercise
             RowKey = Id.ToString();
         }
     }
-
-    // Placeholder
-    public class AnsweredQuestion
-    {
-        public Guid QuestionId { get; set; }
-        public Guid AnswerId { get; set; }
-    }
-
-    public class ExerciseCompletion
-    {
-        public Guid ExerciseId { get; set; }
-        public List<List<AnsweredQuestion>> AnsweredQuestions { get; set; }
-    }
     
     // Placeholder
     public class Answer

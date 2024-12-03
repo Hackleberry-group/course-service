@@ -23,7 +23,25 @@ public class TopicService : ITopicService
 
     public async Task<IEnumerable<Topic>> GetTopicsAsync()
     {
-        return await _tableStorageQueryService.GetAllEntitiesAsync<Topic>(TableName);
+        var topics = _tableStorageQueryService.GetAllEntitiesAsync<Topic>(TableName);
+
+        foreach (var topic in topics.Result)
+        {
+            var filter = topic.Id.ToFilter<Exercise>("TopicId");
+            var exercises =
+                await _tableStorageQueryService.GetEntitiesByFilterAsync<Exercise>(EntityConstants.ExerciseTableName,
+                    filter);
+            topic.Exercises = exercises.ToList();
+        }
+
+        return topics.Result;
+    }
+
+    public async Task<IEnumerable<Exercise>> GetExercisesByTopicIdAsync(Guid topicId)
+    {
+        var filter = topicId.ToFilter<Exercise>("TopicId");
+        var exercises = await _tableStorageQueryService.GetEntitiesByFilterAsync<Exercise>(EntityConstants.ExerciseTableName, filter);
+        return exercises;
     }
 
     public async Task<Topic> CreateTopicAsync(Topic topic)
@@ -58,6 +76,14 @@ public class TopicService : ITopicService
 
     public async Task DeleteTopicAsync(Guid id)
     {
+        var filter = id.ToFilter<Exercise>("TopicId");
+        var exercises = await _tableStorageQueryService.GetEntitiesByFilterAsync<Exercise>(EntityConstants.ExerciseTableName, filter);
+
+        foreach (var exercise in exercises)
+        {
+            await _tableStorageQueryService.DeleteEntityAsync(EntityConstants.ExerciseTableName, exercise.PartitionKey, exercise.RowKey);
+        }
+
         await _tableStorageQueryService.DeleteEntityAsync(TableName, PartitionKey, id.ToString());
     }
 }
