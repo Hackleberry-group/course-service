@@ -46,6 +46,8 @@ public class TopicService : ITopicService
 
     public async Task<Topic> CreateTopicAsync(Topic topic)
     {
+        topic.PartitionKey = PartitionKey;
+        topic.Id = Guid.NewGuid();
         await _tableStorageCommandService.AddEntityAsync(TableName, topic);
         return topic;
     }

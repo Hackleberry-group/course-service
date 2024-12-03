@@ -40,10 +40,12 @@ namespace CourseServiceAPI.Services
 
         public async Task<Exercise> CreateExerciseAsync(Exercise exercise)
         {
+            exercise.PartitionKey = PartitionKey;
+            exercise.Id = Guid.NewGuid();
             await _tableStorageCommandService.AddEntityAsync(TableName, exercise);
             return exercise;
         }
-        
+
         public async Task DeleteExerciseAsync(Guid id)
         {
             await _tableStorageQueryService.DeleteEntityAsync(TableName, PartitionKey, id.ToString());

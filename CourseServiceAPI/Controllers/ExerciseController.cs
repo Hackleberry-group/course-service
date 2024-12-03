@@ -29,7 +29,6 @@ namespace CourseServiceAPI.Controllers
         public async Task<ActionResult<ExerciseResponseDTO>> GetExerciseById(Guid id)
         {
             var exercise = await _exerciseService.GetExerciseByIdAsync(id);
-
             var response = Mapper.MapToExerciseResponseDto(exercise);
 
             return Ok(response);
@@ -39,11 +38,9 @@ namespace CourseServiceAPI.Controllers
         public async Task<ActionResult<Exercise>> CreateExercise([FromBody] ExerciseRequestDTO exerciseDto)
         {
             var exercise = Mapper.MapToExercise(exerciseDto);
-
+            exercise.Id = Guid.NewGuid();
             var createdExercise = await _exerciseService.CreateExerciseAsync(exercise);
-
             var response = Mapper.MapToExerciseResponseDto(createdExercise);
-
             return CreatedAtAction(nameof(GetExerciseById), new { id = createdExercise.Id }, response);
         }
 
@@ -52,16 +49,11 @@ namespace CourseServiceAPI.Controllers
         {
             var exercise = Mapper.MapToExercise(exerciseDto);
             exercise.Id = id;
-            exercise.PartitionKey = EntityConstants.ExercisePartitionKey;
-            exercise.RowKey = id.ToString();
-
             var updatedExercise = await _exerciseService.PutExerciseByIdAsync(id, exercise);
-
             var response = Mapper.MapToExerciseResponseDto(updatedExercise);
-
             return Ok(response);
         }
-        
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteExercise(Guid id)
         {
