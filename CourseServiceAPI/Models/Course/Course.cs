@@ -10,10 +10,18 @@ public class Course : ITableEntity
     public DateTimeOffset? Timestamp { get; set; }
     public ETag ETag { get; set; }
     public string Name { get; set; }
-    public string ProgrammingLanguage { get; set; }
-}
-
-public enum ProgrammingLanguage
-{
-    CSHARP, JAVA, PYTHON, GO, JAVASCRIPT
+    public string ProgrammingLanguage 
+    {   get { return ProgrammingLanguage; }
+        set {
+                if (Enum.TryParse<ProgrammingLanguage>(value, out var language))
+                {
+                    ProgrammingLanguage = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Programming Language");
+                }
+        }
+    }
+    public string TeacherId { get; set; }
 }
