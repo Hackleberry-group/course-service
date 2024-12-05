@@ -13,7 +13,7 @@ public class TopicsController : ControllerBase
 {
     private readonly ITopicService _topicService;
 
-    public TopicController(ITopicService topicService)
+    public TopicsController(ITopicService topicService)
     {
         _topicService = topicService;
     }

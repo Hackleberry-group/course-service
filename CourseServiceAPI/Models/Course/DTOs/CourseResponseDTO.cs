@@ -12,5 +12,7 @@ namespace CourseServiceAPI.Models.Course.DTOs
         public string ProgrammingLanguage { get; init; }
         [Required]
         public string TeacherId { get; init; }
+        [Required]
+        public List<Guid> ModuleIds { get; init; } = new List<Guid>();
     }
 }

@@ -5,10 +5,23 @@ namespace CourseServiceAPI.Models.Course.DTOs
     public class CourseRequestDTO
     {
         [Required]
-        public string Name { get; init; }
+        public required string Name { get; init; }
         [Required]
-        public string ProgrammingLanguage { get; init; }
+        public string ProgrammingLanguage {
+            get { return ProgrammingLanguage; } 
+            set 
+            {
+                if (Enum.TryParse<ProgrammingLanguage>(value, out var language))
+                {
+                    ProgrammingLanguage = value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Programming Language");
+                }
+            } 
+        }
         [Required]
-        public string TeacherId { get; init; }
+        public required string TeacherId { get; init; }
     }
 }

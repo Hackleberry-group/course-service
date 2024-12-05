@@ -24,4 +24,5 @@ public class Course : ITableEntity
         }
     }
     public string TeacherId { get; set; }
+    public List<Guid> ModuleIds { get; set; } = new List<Guid>();
 }

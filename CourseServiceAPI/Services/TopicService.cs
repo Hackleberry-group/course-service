@@ -35,20 +35,10 @@ namespace CourseServiceAPI.Services
                 var exercises =
                     await _tableStorageQueryService.GetEntitiesByFilterAsync<Exercise>(EntityConstants.ExerciseTableName,
                         filter);
-                topic.Exercises = exercises.ToList();
+                topic.ExerciseIds = exercises.Select(e => Guid.Parse(e.RowKey)).ToList();
             }
-
             return topics;
         }
-
-        public async Task<Topic> CreateTopicAsync(Topic topic)
-        {
-            topic.PartitionKey = PartitionKey;
-            topic.RowKey = Guid.NewGuid().ToString();
-            await _tableStorageCommandService.AddEntityAsync(TableName, topic);
-            return topic;
-        }
-
         public async Task<Topic> GetTopicByIdAsync(Guid id)
         {
             var topic = await _tableStorageQueryService.GetEntityAsync<Topic>(TableName, PartitionKey, id.ToString());
@@ -62,9 +52,23 @@ namespace CourseServiceAPI.Services
                 await _tableStorageQueryService.GetEntitiesByFilterAsync<Exercise>(EntityConstants.ExerciseTableName,
                     filter);
 
-            topic.Exercises = exercises.ToList();
+            topic.ExerciseIds = exercises.Select(e => Guid.Parse(e.RowKey)).ToList();
 
             return topic;
+        }
+
+        public async Task<Topic> CreateTopicAsync(Topic topic)
+        {
+            topic.PartitionKey = PartitionKey;
+            topic.RowKey = Guid.NewGuid().ToString();
+            await _tableStorageCommandService.AddEntityAsync(TableName, topic);
+            return topic;
+        }
+
+        public async Task<IEnumerable<Topic>> GetTopicsByModuleIdAsync(Guid id)
+        {
+            var filter = id.ToFilter<Topic>("ModuleId");
+            return await _tableStorageQueryService.GetEntitiesByFilterAsync<Topic>(TableName, filter);
         }
 
         public async Task<Topic> PutTopicByIdAsync(Guid id, Topic topic)

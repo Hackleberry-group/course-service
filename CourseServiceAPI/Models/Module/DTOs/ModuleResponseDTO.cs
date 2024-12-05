@@ -15,5 +15,8 @@ namespace CourseServiceAPI.Models.Module.DTOs
 
         [Required]
         public int Order { get; init; }
+
+        [Required]
+        public List<Guid> TopicIds { get; init; } = new List<Guid>();
     }
 }

@@ -3,6 +3,7 @@ using CourseServiceAPI.Interfaces;
 using CourseServiceAPI.Interfaces.Commands;
 using CourseServiceAPI.Interfaces.Queries;
 using CourseServiceAPI.Models.Course;
+using CourseServiceAPI.Models.Module;
 
 namespace CourseServiceAPI.Services
 {
@@ -10,20 +11,30 @@ namespace CourseServiceAPI.Services
     {
         private readonly ITableStorageQueryService _tableStorageQueryService;
         private readonly ITableStorageCommandService _tableStorageCommandService;
+        private readonly IModuleService _moduleService;
 
         private const string TableName = EntityConstants.CourseTableName;
         private const string PartitionKey = EntityConstants.CoursePartitionKey;
 
         public CourseService(ITableStorageQueryService tableStorageQueryService,
-            ITableStorageCommandService tableStorageCommandService)
+            ITableStorageCommandService tableStorageCommandService,
+            IModuleService moduleService)
         {
             _tableStorageQueryService = tableStorageQueryService;
             _tableStorageCommandService = tableStorageCommandService;
+            _moduleService = moduleService;
         }
 
         public async Task<IEnumerable<Course>> GetCoursesAsync()
         {
-            return await _tableStorageQueryService.GetAllEntitiesAsync<Course>(TableName);
+            var courses = await _tableStorageQueryService.GetAllEntitiesAsync<Course>(TableName);
+
+            foreach (var course in courses) {
+                var filter = Guid.Parse(course.RowKey).ToFilter<Module>("CourseId");
+                var modules = await _tableStorageQueryService.GetEntitiesByFilterAsync<Module>(EntityConstants.ModuleTableName, filter);
+                course.ModuleIds = modules.Select(m => Guid.Parse(m.RowKey)).ToList();
+            }
+            return courses;
         }
 
         public async Task<Course> GetCourseByIdAsync(Guid id)
@@ -33,15 +44,18 @@ namespace CourseServiceAPI.Services
 
         public async Task<Course> CreateCourseAsync(Course course)
         {
-            return await _tableStorageCommandService.AddEntityAsync(TableName, course);
+            course.RowKey = Guid.NewGuid().ToString();
+            course.PartitionKey = PartitionKey;
+            await _tableStorageCommandService.AddEntityAsync(TableName, course);
+            return course;
         }
 
         public async Task<Course> PutCourseByIdAsync(Guid id, Course course)
         {
             course.PartitionKey = PartitionKey;
             course.RowKey = id.ToString();
-
-            return await _tableStorageCommandService.UpdateEntityAsync(TableName, course);
+            await _tableStorageCommandService.UpdateEntityAsync(TableName, course);
+            return course;
         }
 
         public async Task DeleteCourseAsync(Guid id)

@@ -13,7 +13,7 @@ public class Topic : ITableEntity
     public string Name { get; set; }
     public Guid ModuleId { get; set; }
     public int Order { get; set; }
-    public List<Exercise.Exercise>? Exercises { get; set; }
+    public List<Guid> ExerciseIds { get; set; } = new List<Guid>();
 
     public Topic()
     {
