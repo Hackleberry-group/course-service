@@ -10,6 +10,5 @@ public interface ITableStorageQueryService
 
     Task<IEnumerable<T>> GetEntitiesByFilterAsync<T>(string tableName, string filter) where T : class, ITableEntity, new();
 
-
     Task DeleteEntityAsync(string tableName, string partitionKey, string rowKey);
 }

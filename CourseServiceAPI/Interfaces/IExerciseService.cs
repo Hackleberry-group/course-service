@@ -14,5 +14,7 @@ namespace CourseServiceAPI.Interfaces
         Task<Exercise> PutExerciseByIdAsync(Guid id, Exercise exercise);
 
         Task DeleteExerciseAsync(Guid id);
+
+        Task PublishExerciseDeletedEventAsync(Guid id);
     }
 }

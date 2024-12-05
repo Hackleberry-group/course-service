@@ -9,6 +9,7 @@ using FluentValidation.AspNetCore;
 using CourseServiceAPI.Middleware;
 using CourseServiceAPI.Services.Commands;
 using CourseServiceAPI.Services.Queries;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,11 @@ builder.Services.AddControllers(options =>
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<ExerciseDtoValidator>();
+
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq();
+});
 
 var app = builder.Build();
 

@@ -4,10 +4,7 @@ using CourseServiceAPI.Models.Exercise;
 using CourseServiceAPI.Models.Topic;
 using CourseServiceAPI.Services;
 using NSubstitute;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using CourseServiceAPI.Interfaces;
 
 namespace CourseServiceAPI.Tests.CourseServiceTests;
 
@@ -16,6 +13,7 @@ public class TopicServiceTests
 {
     private ITableStorageQueryService _tableStorageQueryService;
     private ITableStorageCommandService _tableStorageCommandService;
+    private IExerciseService _exerciseService;
     private TopicService _topicService;
 
     [SetUp]
@@ -23,7 +21,8 @@ public class TopicServiceTests
     {
         _tableStorageQueryService = Substitute.For<ITableStorageQueryService>();
         _tableStorageCommandService = Substitute.For<ITableStorageCommandService>();
-        _topicService = new TopicService(_tableStorageQueryService, _tableStorageCommandService);
+        _exerciseService = Substitute.For<IExerciseService>();
+        _topicService = new TopicService(_tableStorageQueryService, _tableStorageCommandService, _exerciseService);
     }
 
     [Test]
@@ -80,7 +79,7 @@ public class TopicServiceTests
         Assert.Multiple(() =>
         {
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.RowKey, Is.EqualTo(topicId.ToString())); // Compare to string representation of topicId
+            Assert.That(result.RowKey, Is.EqualTo(topicId.ToString()));
             Assert.That(result.Exercises.Count, Is.EqualTo(2));
             Assert.That(result.Exercises, Is.EqualTo(exercises));
         });
@@ -91,6 +90,9 @@ public class TopicServiceTests
     {
         var topicId = Guid.NewGuid();
         var topic = new Topic { RowKey = topicId.ToString(), Name = "Updated Topic", ModuleId = Guid.NewGuid(), Order = 1 };
+
+        _tableStorageQueryService.GetEntityAsync<Topic>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+            .Returns(topic);
 
         var result = await _topicService.PutTopicByIdAsync(topicId, topic);
 
@@ -105,6 +107,10 @@ public class TopicServiceTests
     public async Task DeleteTopicAsync_ShouldDeleteTopic()
     {
         var topicId = Guid.NewGuid();
+        var topic = new Topic { RowKey = topicId.ToString(), Name = "Topic", ModuleId = Guid.NewGuid(), Order = 1 };
+
+        _tableStorageQueryService.GetEntityAsync<Topic>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+            .Returns(topic);
 
         await _topicService.DeleteTopicAsync(topicId);
 
