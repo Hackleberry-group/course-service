@@ -39,6 +39,12 @@ namespace CourseServiceAPI.Services
             return exercise;
         }
 
+        public Task<IEnumerable<Exercise>> GetExercisesByTopicIdAsync(Guid topicId)
+        {
+            var filter = topicId.ToFilter<Exercise>("TopicId");
+            return _tableStorageQueryService.GetEntitiesByFilterAsync<Exercise>(TableName, filter);
+        }
+
         public async Task<Exercise> PutExerciseByIdAsync(Guid id, Exercise exercise)
         {
             var existingExercise = await _tableStorageQueryService.GetEntityAsync<Exercise>(TableName, PartitionKey, id.ToString());
