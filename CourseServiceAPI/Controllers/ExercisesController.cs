@@ -10,11 +10,11 @@ namespace CourseServiceAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ExerciseController : ControllerBase
+    public class ExercisesController : ControllerBase
     {
         private readonly IExerciseService _exerciseService;
 
-        public ExerciseController(IExerciseService exerciseService)
+        public ExercisesController(IExerciseService exerciseService)
         {
             _exerciseService = exerciseService;
         }
@@ -55,7 +55,6 @@ namespace CourseServiceAPI.Controllers
             try
             {
                 var exercise = Mapper.MapToExercise(exerciseDto);
-                exercise.RowKey = Guid.NewGuid().ToString();
                 var createdExercise = await _exerciseService.CreateExerciseAsync(exercise);
                 var response = Mapper.MapToExerciseResponseDto(createdExercise);
                 return CreatedAtAction(nameof(GetExerciseById), new { id = createdExercise.RowKey }, response);

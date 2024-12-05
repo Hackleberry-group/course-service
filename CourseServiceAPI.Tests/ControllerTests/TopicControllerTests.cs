@@ -12,13 +12,13 @@ namespace CourseServiceAPI.Tests.ControllerTests
     public class TopicControllerTests
     {
         private ITopicService _topicService;
-        private TopicController _topicController;
+        private TopicsController _topicController;
 
         [SetUp]
         public void SetUp()
         {
             _topicService = Substitute.For<ITopicService>();
-            _topicController = new TopicController(_topicService);
+            _topicController = new TopicsController(_topicService);
         }
 
         [Test]

@@ -12,13 +12,13 @@ namespace CourseServiceAPI.Tests.ControllerTests
     public class ExerciseControllerTests
     {
         private IExerciseService _exerciseService;
-        private ExerciseController _exerciseController;
+        private ExercisesController _exerciseController;
 
         [SetUp]
         public void SetUp()
         {
             _exerciseService = Substitute.For<IExerciseService>();
-            _exerciseController = new ExerciseController(_exerciseService);
+            _exerciseController = new ExercisesController(_exerciseService);
         }
 
         [Test]

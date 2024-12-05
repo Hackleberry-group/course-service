@@ -1,5 +1,6 @@
 ﻿using CourseServiceAPI.Helpers;
 using CourseServiceAPI.Interfaces;
+using CourseServiceAPI.Models.Exercise.DTOs;
 using CourseServiceAPI.Models.Topic;
 using CourseServiceAPI.Models.Topic.DTOs;
 using HackleberrySharedModels.Exceptions;
@@ -9,13 +10,15 @@ namespace CourseServiceAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TopicController : ControllerBase
+public class TopicsController : ControllerBase
 {
     private readonly ITopicService _topicService;
+    private readonly IExerciseService _exerciseService;
 
-    public TopicController(ITopicService topicService)
+    public TopicsController(ITopicService topicService, IExerciseService exerciseService)
     {
         _topicService = topicService;
+        _exerciseService = exerciseService;
     }
 
     [HttpGet]
@@ -46,6 +49,14 @@ public class TopicController : ControllerBase
         {
             throw new InternalErrorException();
         }
+    }
+
+    [HttpGet("{id}/exercises")]
+    public async Task<ActionResult<IEnumerable<ExerciseResponseDTO>>> GetExercisesByTopicId(Guid id)
+    {
+        var exercises = await _exerciseService.GetExercisesByTopicIdAsync(id);
+        
+        return Ok(exercises.Select(Mapper.MapToExerciseResponseDto));
     }
 
     [HttpPost]
