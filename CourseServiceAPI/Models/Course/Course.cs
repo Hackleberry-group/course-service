@@ -13,7 +13,7 @@ public class Course : ITableEntity
     public string ProgrammingLanguage 
     {   get { return ProgrammingLanguage; }
         set {
-                if (Enum.TryParse<ProgrammingLanguage>(value, out var language))
+                if (Enum.TryParse<ProgrammingLanguage>(value, out var _))
                 {
                     ProgrammingLanguage = value;
                 }

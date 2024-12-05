@@ -82,7 +82,7 @@ public static class Mapper
         {
             Name = dto.Name,
             ProgrammingLanguage = dto.ProgrammingLanguage,
-            TeacherId = dto.TeacherId
+            TeacherId = dto.TeacherId.ToString()
         };
     }
 
