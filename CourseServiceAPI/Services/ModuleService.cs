@@ -33,6 +33,11 @@ namespace CourseServiceAPI.Services
             return await _tableStorageQueryService.GetEntityAsync<Module>(TableName, PartitionKey, id.ToString());
         }
 
+        public Task<IEnumerable<Module>> GetModulesByCourseIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Module> CreateModuleAsync(Module module)
         {
             return await _tableStorageCommandService.AddEntityAsync(TableName, module);
@@ -49,6 +54,9 @@ namespace CourseServiceAPI.Services
         public async Task DeleteModuleAsync(Guid id)
         {
             await _tableStorageQueryService.DeleteEntityAsync(TableName, PartitionKey, id.ToString());
+            //TODO: Delete all topics by module id
         }
+
+        
     }
 }

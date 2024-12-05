@@ -48,7 +48,7 @@ namespace CourseServiceAPI.Services
         {
             await _tableStorageQueryService.DeleteEntityAsync(TableName, PartitionKey, id.ToString());
             // TODO: Call user service to delete the group-course link
-            // TODO: Call module service to remove the modules' course id
+            // TODO: Call module service to remove the modules with course id
         }
     }
 }
