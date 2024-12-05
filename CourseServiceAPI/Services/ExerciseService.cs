@@ -58,7 +58,7 @@ namespace CourseServiceAPI.Services
 
         public async Task PublishExerciseDeletedEventAsync(Guid id)
         {
-            var exerciseDelete = new ExerciseDelete { ExerciseId = id };
+            var exerciseDelete = new ExerciseDeleted { ExerciseId = id };
             await _publishEndpoint.Publish(exerciseDelete);
         } 
     }
