@@ -52,10 +52,10 @@ namespace CourseServiceAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ModuleResponseDTO> Put([FromBody] ModuleRequestDTO moduleDTO)
+        public async Task<ModuleResponseDTO> Put([FromRoute] Guid moduleId, [FromBody] ModuleRequestDTO moduleDTO)
         {
             var module = Mapper.MapToModule(moduleDTO);
-            var updatedModule = await _moduleService.PutModuleByIdAsync(module);
+            var updatedModule = await _moduleService.PutModuleByIdAsync(moduleId, module);
 
             return Mapper.MapToModuleResponseDto(updatedModule);
         }
