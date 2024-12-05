@@ -11,14 +11,17 @@ namespace CourseServiceAPI.Services
     {
         private readonly ITableStorageQueryService _tableStorageQueryService;
         private readonly ITableStorageCommandService _tableStorageCommandService;
+        private readonly IExerciseService _exerciseService;
         private const string TableName = EntityConstants.TopicTableName;
         private const string PartitionKey = EntityConstants.TopicPartitionKey;
 
         public TopicService(ITableStorageQueryService tableStorageQueryService,
-            ITableStorageCommandService tableStorageCommandService)
+            ITableStorageCommandService tableStorageCommandService,
+            IExerciseService exerciseService)
         {
             _tableStorageQueryService = tableStorageQueryService;
             _tableStorageCommandService = tableStorageCommandService;
+            _exerciseService = exerciseService;
         }
 
         public async Task<IEnumerable<Topic>> GetTopicsAsync()
@@ -74,7 +77,7 @@ namespace CourseServiceAPI.Services
 
             foreach (var exercise in exercises)
             {
-                await _tableStorageQueryService.DeleteEntityAsync(EntityConstants.ExerciseTableName, exercise.PartitionKey, exercise.RowKey);
+                await _exerciseService.DeleteExerciseAsync(Guid.Parse(exercise.RowKey));
             }
 
             await _tableStorageQueryService.DeleteEntityAsync(TableName, PartitionKey, id.ToString());

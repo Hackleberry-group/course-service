@@ -4,10 +4,7 @@ using CourseServiceAPI.Models.Exercise;
 using CourseServiceAPI.Models.Topic;
 using CourseServiceAPI.Services;
 using NSubstitute;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using CourseServiceAPI.Interfaces;
 
 namespace CourseServiceAPI.Tests.CourseServiceTests;
 
@@ -16,6 +13,7 @@ public class TopicServiceTests
 {
     private ITableStorageQueryService _tableStorageQueryService;
     private ITableStorageCommandService _tableStorageCommandService;
+    private IExerciseService _exerciseService;
     private TopicService _topicService;
 
     [SetUp]
@@ -23,7 +21,8 @@ public class TopicServiceTests
     {
         _tableStorageQueryService = Substitute.For<ITableStorageQueryService>();
         _tableStorageCommandService = Substitute.For<ITableStorageCommandService>();
-        _topicService = new TopicService(_tableStorageQueryService, _tableStorageCommandService);
+        _exerciseService = Substitute.For<IExerciseService>();
+        _topicService = new TopicService(_tableStorageQueryService, _tableStorageCommandService, _exerciseService);
     }
 
     [Test]
