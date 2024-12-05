@@ -2,6 +2,7 @@
 using CourseServiceAPI.Interfaces.Queries;
 using CourseServiceAPI.Models.Exercise;
 using CourseServiceAPI.Services;
+using HackleberrySharedModels.Exceptions;
 using MassTransit;
 using NSubstitute;
 
@@ -78,6 +79,9 @@ public class ExerciseServiceTests
         var exerciseId = Guid.NewGuid();
         var exercise = new Exercise { RowKey = exerciseId.ToString(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
 
+        _tableStorageQueryService.GetEntityAsync<Exercise>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+            .Returns(exercise);
+
         var result = await _exerciseService.PutExerciseByIdAsync(exerciseId, exercise);
 
         await Assert.MultipleAsync(async () =>
@@ -91,6 +95,10 @@ public class ExerciseServiceTests
     public async Task DeleteExerciseAsync_ShouldDeleteExercise()
     {
         var exerciseId = Guid.NewGuid();
+        var exercise = new Exercise { RowKey = exerciseId.ToString(), Order = 1, IsTopicExam = false, TopicId = Guid.NewGuid() };
+
+        _tableStorageQueryService.GetEntityAsync<Exercise>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+            .Returns(exercise);
 
         await _exerciseService.DeleteExerciseAsync(exerciseId);
 
@@ -98,3 +106,4 @@ public class ExerciseServiceTests
             .DeleteEntityAsync(Arg.Any<string>(), Arg.Any<string>(), exerciseId.ToString());
     }
 }
+

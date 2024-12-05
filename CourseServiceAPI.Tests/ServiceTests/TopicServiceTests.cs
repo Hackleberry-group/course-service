@@ -79,7 +79,7 @@ public class TopicServiceTests
         Assert.Multiple(() =>
         {
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.RowKey, Is.EqualTo(topicId.ToString())); // Compare to string representation of topicId
+            Assert.That(result.RowKey, Is.EqualTo(topicId.ToString()));
             Assert.That(result.Exercises.Count, Is.EqualTo(2));
             Assert.That(result.Exercises, Is.EqualTo(exercises));
         });
@@ -90,6 +90,9 @@ public class TopicServiceTests
     {
         var topicId = Guid.NewGuid();
         var topic = new Topic { RowKey = topicId.ToString(), Name = "Updated Topic", ModuleId = Guid.NewGuid(), Order = 1 };
+
+        _tableStorageQueryService.GetEntityAsync<Topic>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+            .Returns(topic);
 
         var result = await _topicService.PutTopicByIdAsync(topicId, topic);
 
@@ -104,6 +107,10 @@ public class TopicServiceTests
     public async Task DeleteTopicAsync_ShouldDeleteTopic()
     {
         var topicId = Guid.NewGuid();
+        var topic = new Topic { RowKey = topicId.ToString(), Name = "Topic", ModuleId = Guid.NewGuid(), Order = 1 };
+
+        _tableStorageQueryService.GetEntityAsync<Topic>(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>())
+            .Returns(topic);
 
         await _topicService.DeleteTopicAsync(topicId);
 

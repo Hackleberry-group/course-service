@@ -3,6 +3,7 @@ using CourseServiceAPI.Interfaces;
 using CourseServiceAPI.Interfaces.Commands;
 using CourseServiceAPI.Interfaces.Queries;
 using CourseServiceAPI.Models.Exercise;
+using HackleberrySharedModels.Exceptions;
 using HackleberrySharedModels.Requests;
 using MassTransit;
 
@@ -30,11 +31,21 @@ namespace CourseServiceAPI.Services
 
         public async Task<Exercise> GetExerciseByIdAsync(Guid id)
         {
-            return await _tableStorageQueryService.GetEntityAsync<Exercise>(TableName, PartitionKey, id.ToString());
+            var exercise = await _tableStorageQueryService.GetEntityAsync<Exercise>(TableName, PartitionKey, id.ToString());
+            if (exercise == null)
+            {
+                throw new NotFoundException();
+            }
+            return exercise;
         }
 
         public async Task<Exercise> PutExerciseByIdAsync(Guid id, Exercise exercise)
         {
+            var existingExercise = await _tableStorageQueryService.GetEntityAsync<Exercise>(TableName, PartitionKey, id.ToString());
+            if (existingExercise == null)
+            {
+                throw new NotFoundException();
+            }
             exercise.PartitionKey = PartitionKey;
             exercise.RowKey = id.ToString();
             await _tableStorageCommandService.UpdateEntityAsync(TableName, exercise);
@@ -51,8 +62,12 @@ namespace CourseServiceAPI.Services
 
         public async Task DeleteExerciseAsync(Guid id)
         {
+            var exercise = await _tableStorageQueryService.GetEntityAsync<Exercise>(TableName, PartitionKey, id.ToString());
+            if (exercise == null)
+            {
+                throw new NotFoundException();
+            }
             await _tableStorageQueryService.DeleteEntityAsync(TableName, PartitionKey, id.ToString());
-
             await PublishExerciseDeletedEventAsync(id);
         }
 
@@ -60,6 +75,6 @@ namespace CourseServiceAPI.Services
         {
             var exerciseDelete = new ExerciseDeleted { ExerciseId = id };
             await _publishEndpoint.Publish(exerciseDelete);
-        } 
+        }
     }
 }

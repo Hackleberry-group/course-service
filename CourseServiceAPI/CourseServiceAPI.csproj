@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SharedLibraries\Exceptions\HackleberryExceptions.csproj" />
     <ProjectReference Include="..\SharedLibraries\HackleberrySharedModels\HackleberryModels.csproj" />
   </ItemGroup>
 
