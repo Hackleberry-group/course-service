@@ -1,4 +1,5 @@
 ﻿using CourseServiceAPI.Models;
+using CourseServiceAPI.Models.Course;
 using CourseServiceAPI.Validators;
 using FluentValidation.TestHelper;
 
@@ -16,22 +17,22 @@ public class CourseValidatorTests
     }
 
     [Test]
-    public void ShouldHaveErrorWhenTitleIsEmpty()
+    public void ShouldHaveErrorWhenNameIsEmpty()
     {
-        var course = new Course { Title = string.Empty };
+        var course = new Course { Name = string.Empty };
 
         var result = _validator.TestValidate(course);
 
-        result.ShouldHaveValidationErrorFor(c => c.Title);
+        result.ShouldHaveValidationErrorFor(c => c.Name);
     }
 
     [Test]
-    public void ShouldNotHaveErrorWhenTitleIsSpecified()
+    public void ShouldNotHaveErrorWhenNameIsSpecified()
     {
-        var course = new Course { Title = "Valid Title" };
+        var course = new Course { Name = "Valid Title" };
 
         var result = _validator.TestValidate(course);
 
-        result.ShouldNotHaveValidationErrorFor(c => c.Title);
+        result.ShouldNotHaveValidationErrorFor(c => c.Name);
     }
 }

@@ -10,26 +10,26 @@ public class CourseServiceTests
     private ICourseService _courseService;
 
     [SetUp]
-    public void Setup()
+    public void Setup(ICourseService courseService)
     {
-        _courseService = new CourseService();
+        _courseService = courseService;
     }
 
     [Test]
-    public void GetCourses_ShouldReturnListOfCourses()
+    public async Task GetCourses_ShouldReturnListOfCourses()
     {
-        var result = _courseService.GetCourses();
+        var result = await _courseService.GetCoursesAsync();
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Has.Exactly(3).Items);
     }
 
     [Test]
-    public void CreateCourse_ShouldReturnCreatedCourse()
+    public async Task CreateCourse_ShouldReturnCreatedCourse()
     {
         var course = new Course { RowKey = Guid.NewGuid().ToString(), Name = "New Course" };
 
-        var result = _courseService.CreateCourse(course);
+        var result = await _courseService.CreateCourseAsync(course);
 
         Assert.Multiple(() =>
         {
