@@ -9,6 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.9.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="MassTransit" Version="8.3.2" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="NSubstitute" Version="5.3.0" />
     <PackageReference Include="NUnit" Version="4.2.2" />
@@ -18,6 +20,11 @@
 
   <ItemGroup>
     <Folder Include="Interfaces\Commands\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedLibraries\Exceptions\HackleberryExceptions.csproj" />
+    <ProjectReference Include="..\SharedLibraries\HackleberrySharedModels\HackleberryModels.csproj" />
   </ItemGroup>
 
 </Project>

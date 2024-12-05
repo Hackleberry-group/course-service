@@ -20,7 +20,6 @@ public static class Mapper
             Order = exercise.Order,
             IsTopicExam = exercise.IsTopicExam,
             TopicId = exercise.TopicId,
-            Questions = exercise.Questions
         };
     }
 
@@ -52,6 +51,7 @@ public static class Mapper
             Name = topic.Name,
             ModuleId = topic.ModuleId,
             Order = topic.Order,
+            Exercises = topic.Exercises?.Select(MapToExerciseResponseDto).ToList()
         };
     }
 

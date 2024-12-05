@@ -1,4 +1,5 @@
 ﻿using CourseServiceAPI.Models.Exercise;
+using CourseServiceAPI.Models.Exercise.DTOs;
 
 namespace CourseServiceAPI.Interfaces
 {
@@ -6,9 +7,11 @@ namespace CourseServiceAPI.Interfaces
     {
         Task<IEnumerable<Exercise>> GetExercisesAsync();
         Task<Exercise> CreateExerciseAsync(Exercise exercise);
-        Task CompleteExerciseAsync(Guid exerciseId, List<List<AnsweredQuestion>> answeredQuestions);
+
         Task<Exercise> GetExerciseByIdAsync(Guid id);
         Task<Exercise> PutExerciseByIdAsync(Guid id, Exercise exercise);
         Task DeleteExerciseAsync(Guid id);
+
+        Task PublishExerciseDeletedEventAsync(Guid id);
     }
 }

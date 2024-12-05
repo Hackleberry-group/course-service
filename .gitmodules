@@ -1,0 +1,3 @@
+[submodule "SharedLibraries"]
+	path = SharedLibraries
+	url = https://github.com/Hackleberry-group/SharedLibraries.git
