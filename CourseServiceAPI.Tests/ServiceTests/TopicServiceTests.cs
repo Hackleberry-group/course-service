@@ -80,8 +80,8 @@ public class TopicServiceTests
         {
             Assert.That(result, Is.Not.Null);
             Assert.That(result.RowKey, Is.EqualTo(topicId.ToString()));
-            Assert.That(result.Exercises.Count, Is.EqualTo(2));
-            Assert.That(result.Exercises, Is.EqualTo(exercises));
+            Assert.That(result.ExerciseIds.Count, Is.EqualTo(2));
+            Assert.That(result.ExerciseIds, Is.EqualTo(exercises));
         });
     }
 

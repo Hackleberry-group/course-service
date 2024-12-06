@@ -40,6 +40,18 @@ builder.Services.AddMassTransit(x =>
     x.UsingRabbitMq();
 });
 
+// Add CORS services TODO: Remove this if we don't need CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,6 +66,9 @@ app.UseHttpsRedirection();
 app.UseMiddleware<ValidationExceptionMiddleware>();
 
 app.UseAuthorization();
+
+// Use CORS middleware
+app.UseCors("AllowAllOrigins");
 
 app.MapControllers();
 
