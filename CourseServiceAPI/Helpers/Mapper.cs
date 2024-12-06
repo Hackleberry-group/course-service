@@ -72,7 +72,8 @@ public static class Mapper
             Id = Guid.Parse(module.RowKey),
             Name = module.Name,
             Order = module.Order,
-            CourseId = module.CourseId
+            CourseId = module.CourseId,
+            TopicIds = module.TopicIds
         };
     }
 
@@ -93,7 +94,8 @@ public static class Mapper
             Id = Guid.Parse(course.RowKey),
             Name = course.Name,
             ProgrammingLanguage = course.ProgrammingLanguage,
-            TeacherId = course.TeacherId
+            TeacherId = course.TeacherId,
+            ModuleIds = course.ModuleIds
         };
     }
 

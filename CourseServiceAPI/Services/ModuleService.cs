@@ -29,7 +29,16 @@ namespace CourseServiceAPI.Services
 
         public async Task<IEnumerable<Module>> GetModulesAsync()
         {
-            return await _tableStorageQueryService.GetAllEntitiesAsync<Module>(TableName);
+            var modules = await _tableStorageQueryService.GetAllEntitiesAsync<Module>(TableName);
+
+            foreach (var module in modules)
+            {
+                var filter = Guid.Parse(module.RowKey).ToFilter<Topic>("ModuleId");
+                var topics = await _tableStorageQueryService.GetEntitiesByFilterAsync<Topic>(EntityConstants.TopicTableName, filter);
+                module.TopicIds = topics.Select(t => Guid.Parse(t.RowKey)).ToList();
+            }
+
+            return modules;
         }
 
         public async Task<Module> GetModuleByIdAsync(Guid id)

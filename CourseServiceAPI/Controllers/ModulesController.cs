@@ -1,7 +1,9 @@
 ﻿using CourseServiceAPI.Helpers;
 using CourseServiceAPI.Interfaces;
+using CourseServiceAPI.Models.Course.DTOs;
 using CourseServiceAPI.Models.Module.DTOs;
 using CourseServiceAPI.Models.Topic.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CourseServiceAPI.Controllers
@@ -51,12 +53,11 @@ namespace CourseServiceAPI.Controllers
             return Mapper.MapToModuleResponseDto(createdModule);
         }
 
-        [HttpPut]
-        public async Task<ModuleResponseDTO> Put([FromRoute] Guid moduleId, [FromBody] ModuleRequestDTO moduleDTO)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ModuleResponseDTO>> Put(Guid id, [FromBody] ModuleRequestDTO moduleDTO)
         {
             var module = Mapper.MapToModule(moduleDTO);
-            var updatedModule = await _moduleService.PutModuleByIdAsync(moduleId, module);
-
+            var updatedModule = await _moduleService.PutModuleByIdAsync(id, module);
             return Mapper.MapToModuleResponseDto(updatedModule);
         }
 
