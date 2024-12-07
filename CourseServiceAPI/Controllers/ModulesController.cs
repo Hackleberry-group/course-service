@@ -61,7 +61,7 @@ namespace CourseServiceAPI.Controllers
             return Mapper.MapToModuleResponseDto(updatedModule);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task Delete(Guid id)
         {
             await _moduleService.DeleteModuleAsync(id);
