@@ -1,0 +1,29 @@
+services:
+  # Course-service
+  course-service:
+    image: course-service:${COURSESERVICE_IMAGE_TAG}
+    restart: always
+    container_name: CourseService
+    build: 
+      context: .
+      dockerfile: CourseServiceAPI/Dockerfile
+    environment: 
+      - Azure__Storage__ConnectionString=UseDevelopmentStorage=true
+    ports:
+      - "${COURSESERVICE_PORT}:${COURSESERVICE_PORT}"
+    depends_on:
+      - azurite
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    ports:
+      - "10002:10002" # Table service only
+    command: "azurite --table --tableHost 0.0.0.0"
+    volumes:
+      - azurite-data:/data
+
+volumes:
+  azurite-data:
+    
+
+
