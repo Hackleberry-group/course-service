@@ -10,6 +10,7 @@ using CourseServiceAPI.Middleware;
 using CourseServiceAPI.Services.Commands;
 using CourseServiceAPI.Services.Queries;
 using MassTransit;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,8 @@ app.UseAuthorization();
 
 // Use CORS middleware
 app.UseCors("AllowAllOrigins");
+
+app.MapMetrics();
 
 app.MapControllers();
 
