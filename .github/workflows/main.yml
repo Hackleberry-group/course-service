@@ -68,6 +68,11 @@ jobs:
           if [ "$POD_STATUS" == "Running" ]; then
             echo "Pod is running!"
             break
+          elif [ "$POD_STATUS" == "CrashLoopBackOff" ]; then
+            echo "Pod is in CrashLoopBackOff state. Fetching logs and describing the pod..."
+            oc logs pod -l app=${APP_NAME} -n ${OPENSHIFT_NAMESPACE}
+            oc describe pod -l app=${APP_NAME} -n ${OPENSHIFT_NAMESPACE}
+            exit 1
           fi
           echo "Pod not ready yet. Retrying in 10 seconds..."
           sleep 10
