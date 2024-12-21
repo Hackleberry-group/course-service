@@ -34,10 +34,10 @@ jobs:
 
     - name: Deploy course-service
       run: |
-        echo "Checking if deployment for ${APP_NAME} exists..."
-        if ! oc get deploymentconfigs.apps.openshift.io ${{ env.APP_NAME }} -n ${{ env.OPENSHIFT_NAMESPACE }} 2>/dev/null; then
+        echo "Checking if DeploymentConfig for ${APP_NAME} exists..."
+        if ! oc get deploymentconfig ${APP_NAME} -n ${OPENSHIFT_NAMESPACE} 2>/dev/null; then
           echo "DeploymentConfig for ${APP_NAME} not found. Creating a new one..."
-          oc create deploymentconfig ${{ env.APP_NAME }} --image=your-registry-path/${{ env.APP_NAME }}:latest -n ${{ env.OPENSHIFT_NAMESPACE }}
+          oc create deploymentconfig ${APP_NAME} --image=your-registry-path/${APP_NAME}:latest -n ${OPENSHIFT_NAMESPACE}
         else
           echo "DeploymentConfig for ${APP_NAME} already exists."
         fi
@@ -45,11 +45,26 @@ jobs:
     - name: Rollout and verify course-service
       run: |
         echo "Starting rollout for ${APP_NAME}..."
-        oc rollout latest ${{ env.APP_NAME }} -n ${{ env.OPENSHIFT_NAMESPACE }}
+        
+        # Check if a rollout is already in progress
+        CURRENT_STATUS=$(oc rollout status deploymentconfig/${APP_NAME} -n ${OPENSHIFT_NAMESPACE} 2>&1)
+        
+        if [[ "$CURRENT_STATUS" == *"is already in progress"* ]]; then
+          echo "Rollout is already in progress. Monitoring its status..."
+        else
+          oc rollout latest ${APP_NAME} -n ${OPENSHIFT_NAMESPACE}
+        fi
+
+        # Wait for the rollout to complete
+        echo "Waiting for the rollout to complete..."
+        oc rollout status deploymentconfig/${APP_NAME} -n ${OPENSHIFT_NAMESPACE} || {
+          echo "Error: Rollout did not complete successfully."
+          exit 1
+        }
 
         echo "Waiting for the pod to be in 'Running' state..."
         for i in {1..12}; do
-          POD_STATUS=$(oc get pods -n ${{ env.OPENSHIFT_NAMESPACE }} -l app=${{ env.APP_NAME }} -o jsonpath="{.items[0].status.phase}" 2>/dev/null)
+          POD_STATUS=$(oc get pods -n ${OPENSHIFT_NAMESPACE} -l app=${APP_NAME} -o jsonpath="{.items[0].status.phase}" 2>/dev/null)
           if [ "$POD_STATUS" == "Running" ]; then
             echo "Pod is running!"
             break
