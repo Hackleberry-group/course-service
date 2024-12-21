@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build:
     name: Build and push image
@@ -17,10 +18,12 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v2
+
     - name: Install oc
       uses: redhat-actions/openshift-tools-installer@v1
       with:
         oc: 4
+
     - name: Log in to OpenShift
       uses: redhat-actions/oc-login@v1
       with:
@@ -28,12 +31,29 @@ jobs:
         openshift_token: ${{ env.OPENSHIFT_TOKEN }}
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
-    - name: Get POD
+
+    - name: Deploy and verify CourseService
       run: |
-        oc get po -n delta-dev | grep "CourseService" | grep Running
-        oc rollout latest CourseService -n delta-dev
-        sleep 10
-        oc get po -n delta-dev | grep "CourseService" | grep Running -w
-        sleep 60
-        oc get po -n delta-dev | grep "CourseService" | grep Running -w
-        sleep 20
+        # Start the rollout for the application
+        echo "Starting rollout for ${APP_NAME}..."
+        oc rollout latest ${{ env.APP_NAME }} -n ${{ env.OPENSHIFT_NAMESPACE }}
+        
+        # Wait for the new pod to be ready
+        echo "Waiting for the pod to be in 'Running' state..."
+        for i in {1..12}; do
+          POD_STATUS=$(oc get pods -n ${{ env.OPENSHIFT_NAMESPACE }} -l app=${{ env.APP_NAME }} -o jsonpath="{.items[0].status.phase}" 2>/dev/null)
+          if [ "$POD_STATUS" == "Running" ]; then
+            echo "Pod is running!"
+            break
+          fi
+          echo "Pod not ready yet. Retrying in 10 seconds..."
+          sleep 10
+        done
+
+        # Final verification of the pod status
+        if [ "$POD_STATUS" != "Running" ]; then
+          echo "Error: Pod did not reach 'Running' state within the expected time."
+          exit 1
+        fi
+
+        echo "Deployment successful and pod is running."
