@@ -32,13 +32,21 @@ jobs:
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
 
-    - name: Deploy and verify CourseService
+    - name: Deploy CourseService
       run: |
-        # Start the rollout for the application
+        echo "Checking if deployment for ${APP_NAME} exists..."
+        if ! oc get deploymentconfigs.apps.openshift.io ${{ env.APP_NAME }} -n ${{ env.OPENSHIFT_NAMESPACE }} 2>/dev/null; then
+          echo "DeploymentConfig for ${APP_NAME} not found. Creating a new one..."
+          oc create deploymentconfig ${{ env.APP_NAME }} --image=your-registry-path/${{ env.APP_NAME }}:latest -n ${{ env.OPENSHIFT_NAMESPACE }}
+        else
+          echo "DeploymentConfig for ${APP_NAME} already exists."
+        fi
+
+    - name: Rollout and verify CourseService
+      run: |
         echo "Starting rollout for ${APP_NAME}..."
         oc rollout latest ${{ env.APP_NAME }} -n ${{ env.OPENSHIFT_NAMESPACE }}
-        
-        # Wait for the new pod to be ready
+
         echo "Waiting for the pod to be in 'Running' state..."
         for i in {1..12}; do
           POD_STATUS=$(oc get pods -n ${{ env.OPENSHIFT_NAMESPACE }} -l app=${{ env.APP_NAME }} -o jsonpath="{.items[0].status.phase}" 2>/dev/null)
@@ -50,7 +58,6 @@ jobs:
           sleep 10
         done
 
-        # Final verification of the pod status
         if [ "$POD_STATUS" != "Running" ]; then
           echo "Error: Pod did not reach 'Running' state within the expected time."
           exit 1
