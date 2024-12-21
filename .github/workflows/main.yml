@@ -30,10 +30,10 @@ jobs:
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
     - name: Get POD
       run: |
-        oc get po -A | grep "CourseService" | grep Running
+        oc get po -n delta-dev | grep "CourseService" | grep Running
         oc rollout latest CourseService  -n pharmarun-dev
         sleep 10
-        oc get po -A | grep "CourseService" | grep Running -w
+        oc get po -n delta-dev | grep "CourseService" | grep Running -w
         sleep 60
-        oc get po -A | grep "CourseService" | grep Running -w
+        oc get po -n delta-dev | grep "CourseService" | grep Running -w
         sleep 20
