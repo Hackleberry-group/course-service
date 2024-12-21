@@ -31,7 +31,7 @@ jobs:
     - name: Get POD
       run: |
         oc get po -n delta-dev | grep "CourseService" | grep Running
-        oc rollout latest CourseService  -n pharmarun-dev
+        oc rollout latest CourseService -n delta-dev
         sleep 10
         oc get po -n delta-dev | grep "CourseService" | grep Running -w
         sleep 60
