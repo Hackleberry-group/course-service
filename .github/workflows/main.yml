@@ -4,7 +4,7 @@ env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "delta-dev"
-  APP_NAME: "CourseService"
+  APP_NAME: "course-service" # Updated to follow naming conventions
 
 on:
   push:
@@ -32,7 +32,7 @@ jobs:
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
 
-    - name: Deploy CourseService
+    - name: Deploy course-service
       run: |
         echo "Checking if deployment for ${APP_NAME} exists..."
         if ! oc get deploymentconfigs.apps.openshift.io ${{ env.APP_NAME }} -n ${{ env.OPENSHIFT_NAMESPACE }} 2>/dev/null; then
@@ -42,7 +42,7 @@ jobs:
           echo "DeploymentConfig for ${APP_NAME} already exists."
         fi
 
-    - name: Rollout and verify CourseService
+    - name: Rollout and verify course-service
       run: |
         echo "Starting rollout for ${APP_NAME}..."
         oc rollout latest ${{ env.APP_NAME }} -n ${{ env.OPENSHIFT_NAMESPACE }}
