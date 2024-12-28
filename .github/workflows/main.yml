@@ -5,8 +5,7 @@ env:
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "delta-dev"
   APP_NAME: "course-service"
-  KUBECONFIG: /home/runner/work/course-service/course-service/kubeconfig.yaml
-  IMAGE_REGISTRY: image-registry.openshift-image-registry.svc:5000  # Registry URL
+  IMAGE_REGISTRY: image-registry.openshift-image-registry.svc:5000  # Internal registry URL
   IMAGE_TAG: "${IMAGE_REGISTRY}/${OPENSHIFT_NAMESPACE}/${APP_NAME}:latest"
 
 on:
@@ -39,28 +38,20 @@ jobs:
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
 
+    - name: Log in to OpenShift internal registry
+      run: |
+        echo "${{ env.OPENSHIFT_TOKEN }}" | docker login -u $(oc whoami) --password-stdin ${IMAGE_REGISTRY}
+
     - name: Build Docker image
       run: |
         echo "Building Docker image..."
         docker build -t ${APP_NAME}:latest -f CourseServiceAPI/Dockerfile .
-        
-    - name: Pushing image to OpenShift internal registry
+
+    - name: Tag and push image to OpenShift internal registry
       run: |
-        IMAGE_STREAM=$(oc get imagestream ${APP_NAME} -n ${OPENSHIFT_NAMESPACE} --ignore-not-found)
-        
-        if [ -z "$IMAGE_STREAM" ]; then
-          echo "ImageStream for ${APP_NAME} not found. Creating a new one..."
-          oc create imagestream ${APP_NAME} -n ${OPENSHIFT_NAMESPACE}
-        fi
-        
-        IMAGE_REGISTRY=$(oc registry info)
-        IMAGE_TAG="${IMAGE_REGISTRY}/${OPENSHIFT_NAMESPACE}/${APP_NAME}:latest"
-        
-        echo "Logging in to OpenShift internal registry..."
-        docker login -u $(oc whoami -t) -p $(oc whoami -t) $IMAGE_REGISTRY
-        
-        docker tag ${APP_NAME}:latest $IMAGE_TAG
-        docker push $IMAGE_TAG
+        echo "Tagging and pushing Docker image to internal registry..."
+        docker tag ${APP_NAME}:latest ${IMAGE_TAG}
+        docker push ${IMAGE_TAG}
 
     - name: Deploy course-service
       run: |
@@ -69,7 +60,8 @@ jobs:
           echo "DeploymentConfig for ${APP_NAME} not found. Creating a new one..."
           oc create deploymentconfig ${APP_NAME} --image=${IMAGE_TAG} -n ${OPENSHIFT_NAMESPACE}
         else
-          echo "DeploymentConfig for ${APP_NAME} already exists."
+          echo "DeploymentConfig for ${APP_NAME} already exists. Updating image..."
+          oc set image dc/${APP_NAME} ${APP_NAME}=${IMAGE_TAG} -n ${OPENSHIFT_NAMESPACE}
         fi
 
     - name: Rollout and verify course-service
