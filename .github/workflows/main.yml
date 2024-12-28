@@ -6,7 +6,7 @@ env:
   OPENSHIFT_NAMESPACE: "delta-dev"
   APP_NAME: "course-service"
   KUBECONFIG: /home/runner/work/course-service/course-service/kubeconfig.yaml
-  IMAGE_REGISTRY: "image-registry.openshift-image-registry.svc:5000"  # Registry URL
+  IMAGE_REGISTRY: image-registry.openshift-image-registry.svc:5000  # Registry URL
   IMAGE_TAG: "${IMAGE_REGISTRY}/${OPENSHIFT_NAMESPACE}/${APP_NAME}:latest"
 
 on:
@@ -43,7 +43,7 @@ jobs:
       run: |
         echo "Building Docker image..."
         docker build -t ${APP_NAME}:latest -f CourseServiceAPI/Dockerfile .
-
+        
     - name: Pushing image to OpenShift internal registry
       run: |
         IMAGE_STREAM=$(oc get imagestream ${APP_NAME} -n ${OPENSHIFT_NAMESPACE} --ignore-not-found)
@@ -53,7 +53,7 @@ jobs:
           oc create imagestream ${APP_NAME} -n ${OPENSHIFT_NAMESPACE}
         fi
         
-        # Directly use the predefined IMAGE_REGISTRY
+        IMAGE_REGISTRY=$(oc registry info)
         IMAGE_TAG="${IMAGE_REGISTRY}/${OPENSHIFT_NAMESPACE}/${APP_NAME}:latest"
         
         echo "Logging in to OpenShift internal registry..."
