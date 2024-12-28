@@ -38,20 +38,31 @@ jobs:
         insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
 
-    - name: Log in to OpenShift internal registry
-      run: |
-        echo "${{ env.OPENSHIFT_TOKEN }}" | docker login -u $(oc whoami) --password-stdin ${IMAGE_REGISTRY}
-
     - name: Build Docker image
       run: |
         echo "Building Docker image..."
         docker build -t ${APP_NAME}:latest -f CourseServiceAPI/Dockerfile .
 
-    - name: Tag and push image to OpenShift internal registry
+    - name: Ensure ImageStream exists
       run: |
+        IMAGE_STREAM=$(oc get imagestream ${APP_NAME} -n ${OPENSHIFT_NAMESPACE} --ignore-not-found)
+        if [ -z "$IMAGE_STREAM" ]; then
+          echo "ImageStream for ${APP_NAME} not found. Creating a new one..."
+          oc create imagestream ${APP_NAME} -n ${OPENSHIFT_NAMESPACE}
+        fi
+
+    - name: Log in to OpenShift internal registry
+      run: |
+        IMAGE_REGISTRY=$(oc registry info)
+        echo "Logging in to OpenShift internal registry..."
+        echo "${{ env.OPENSHIFT_TOKEN }}" | docker login -u $(oc whoami) --password-stdin $IMAGE_REGISTRY
+
+    - name: Tag and push image to internal registry
+      run: |
+        IMAGE_TAG="${IMAGE_REGISTRY}/${OPENSHIFT_NAMESPACE}/${APP_NAME}:latest"
         echo "Tagging and pushing Docker image to internal registry..."
-        docker tag ${APP_NAME}:latest ${IMAGE_TAG}
-        docker push ${IMAGE_TAG}
+        docker tag ${APP_NAME}:latest $IMAGE_TAG
+        docker push $IMAGE_TAG
 
     - name: Deploy course-service
       run: |
@@ -60,8 +71,7 @@ jobs:
           echo "DeploymentConfig for ${APP_NAME} not found. Creating a new one..."
           oc create deploymentconfig ${APP_NAME} --image=${IMAGE_TAG} -n ${OPENSHIFT_NAMESPACE}
         else
-          echo "DeploymentConfig for ${APP_NAME} already exists. Updating image..."
-          oc set image dc/${APP_NAME} ${APP_NAME}=${IMAGE_TAG} -n ${OPENSHIFT_NAMESPACE}
+          echo "DeploymentConfig for ${APP_NAME} already exists."
         fi
 
     - name: Rollout and verify course-service
