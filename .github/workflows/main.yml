@@ -1,4 +1,4 @@
-name: Build and push CourseService
+name: Main.yml - Build and push CourseService
 
 env:
   OPENSHIFT_SERVER: ${{ secrets.OPENSHIFT_SERVER }}
