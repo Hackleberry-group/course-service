@@ -5,7 +5,7 @@ env:
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "delta-dev"
   APP_NAME: "course-service"
-  IMAGE_REGISTRY: image-registry.openshift-image-registry.svc:5000  # Internal registry URL
+  IMAGE_REGISTRY: "image-registry.openshift-image-registry.svc:5000"  # Internal registry URL
   IMAGE_TAG: "${IMAGE_REGISTRY}/${OPENSHIFT_NAMESPACE}/${APP_NAME}:latest"
 
 on:
@@ -53,7 +53,7 @@ jobs:
 
     - name: Log in to OpenShift internal registry
       run: |
-        IMAGE_REGISTRY=$(oc registry info)
+        # Assuming IMAGE_REGISTRY is directly specified as the OpenShift internal registry URL
         echo "Logging in to OpenShift internal registry..."
         echo "${{ env.OPENSHIFT_TOKEN }}" | docker login -u $(oc whoami) --password-stdin $IMAGE_REGISTRY
 
