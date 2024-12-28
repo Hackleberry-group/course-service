@@ -5,7 +5,7 @@ env:
   OPENSHIFT_TOKEN: ${{ secrets.OPENSHIFT_TOKEN }}
   OPENSHIFT_NAMESPACE: "delta-dev"
   APP_NAME: "course-service"
-  IMAGE_REGISTRY: "image-registry.apps.inholland.hcs-lab.nl:5000"  # Internal registry URL
+  IMAGE_REGISTRY: "image-registry.apps.inholland.hcs-lab.nl"  # Internal registry URL
   IMAGE_TAG: "${IMAGE_REGISTRY}/${OPENSHIFT_NAMESPACE}/${APP_NAME}:latest"
 
 on:
