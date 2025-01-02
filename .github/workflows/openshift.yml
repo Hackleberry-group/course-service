@@ -50,13 +50,15 @@ jobs:
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login "${{ env.GHCR_REGISTRY }}" -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
 
       - name: Set Registry Path as Environment Variable
-        run: echo "IMAGE_REGISTRY_PATH=${{ env.GHCR_REGISTRY }}/${{ env.GITHUB_ORG_NAME }}/${{ env.APP_NAME }}" >> $GITHUB_ENV    
+        run: | 
+          echo "IMAGE_REGISTRY_PATH=${{ env.GHCR_REGISTRY }}/${{ env.GITHUB_ORG_NAME }}/${{ env.APP_NAME }}" >> $GITHUB_ENV    
+          echo "IMAGE_REGISTRY_PATH is set to $IMAGE_REGISTRY_PATH"
 
       - name: Build Docker image
         id: build-image
         run: |
           docker build -t ${{ env.IMAGE_REGISTRY_PATH }}:${{ env.IMAGE_TAGS }} -f  ./CourseServiceAPI/Dockerfile .
-          docker push ${{ env.GHCR_IMAGE_NAME }}:${{ env.IMAGE_TAGS }}  
+          docker push ${{ env.IMAGE_REGISTRY_PATH }}:${{ env.IMAGE_TAGS }}  
 
       - name: Install OpenShift CLI
         uses: redhat-actions/openshift-tools-installer@v1
