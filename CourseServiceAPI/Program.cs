@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton(new TableServiceClient(builder.Configuration["Azure:Storage:ConnectionString"]));
+builder.Services.AddSingleton(new TableServiceClient(builder.Configuration["ConnectionString"]));
 
 builder.Services.AddScoped<ITableStorageCommandService, TableStorageCommandService>();
 builder.Services.AddScoped<ITableStorageQueryService, TableStorageQueryService>();
