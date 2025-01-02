@@ -39,6 +39,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Update Git submodules
+        run: git submodule update --init --recursive
+
       - name: Build Docker image
         id: build-image
         uses: redhat-actions/buildah-build@v2
