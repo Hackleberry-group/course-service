@@ -37,7 +37,7 @@ foreach (var config in builder.Configuration.AsEnumerable())
     logger.LogInformation("{Key}: {Value}", config.Key, config.Value);
 }
 
-builder.Services.AddSingleton(new TableServiceClient(builder.Configuration["ConnectionString"]));
+builder.Services.AddSingleton(new TableServiceClient(Environment.GetEnvironmentVariable("connectionString")));
 
 builder.Services.AddScoped<ITableStorageCommandService, TableStorageCommandService>();
 builder.Services.AddScoped<ITableStorageQueryService, TableStorageQueryService>();
