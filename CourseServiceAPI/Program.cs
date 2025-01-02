@@ -17,6 +17,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+
+    // TODO: Remove in the future
+// Add logging
+var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.AddConsole());
+var logger = loggerFactory.CreateLogger<Program>();
+
+// Log all configuration settings
+foreach (var config in builder.Configuration.AsEnumerable())
+{
+    logger.LogInformation("{Key}: {Value}", config.Key, config.Value);
+}
+
 builder.Services.AddSingleton(new TableServiceClient(builder.Configuration["ConnectionString"]));
 
 builder.Services.AddScoped<ITableStorageCommandService, TableStorageCommandService>();
