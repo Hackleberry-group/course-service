@@ -1,9 +1,10 @@
 # Use the .NET ASP.NET runtime as the base image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+USER $APP_UID
 
-# Install additional tools if needed
-RUN apt-get update \
-    && apt-get install -y curl iputils-ping 
+## Install additional tools if needed
+#RUN apt-get update \
+#    && apt-get install -y curl iputils-ping 
 
 WORKDIR /app
 EXPOSE 1030
@@ -22,7 +23,7 @@ COPY ["SharedLibraries/HackleberrySharedModels/HackleberryModels.csproj", "Share
 COPY ["SharedLibraries/HackleberryServices/HackleberryServices.csproj", "SharedLibraries/HackleberryServices/"]
 
 # Restore dependencies
-RUN dotnet restore "./CourseServiceAPI/CourseServiceAPI.csproj"
+RUN dotnet restore "CourseServiceAPI/CourseServiceAPI.csproj"
 
 # Copy all source files
 COPY . .
@@ -30,11 +31,12 @@ COPY . .
 WORKDIR "/src/CourseServiceAPI"
 
 # Build the project
-RUN dotnet build "./CourseServiceAPI.csproj" -c Release -o /app/build
+RUN dotnet build "CourseServiceAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish the application
 FROM build AS publish
-RUN dotnet publish "./CourseServiceAPI.csproj" -c Release -o /app/publish --no-restore /p:PublishWithAspNetCoreTargetManifest=false
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "CourseServiceAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-restore /p:UseAppHost=false
 
 # Use the ASP.NET runtime as the final stage
 FROM base AS final
@@ -42,7 +44,6 @@ WORKDIR /app
 
 # Copy published output and source files (if needed for debugging)
 COPY --from=publish /app/publish .
-COPY --from=build /src /app/src
 
 # Define the entry point
 ENTRYPOINT ["dotnet", "CourseServiceAPI.dll"]
