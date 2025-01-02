@@ -48,9 +48,6 @@ jobs:
       
       - name: Log in to GHCR
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login "${{ env.GHCR_REGISTRY }}" -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
-  
-      - name: Set Registry Path as Environment Variable
-        run: echo "REGISTRY_PATH=${{ env.GHCR_REGISTRY }}/${{ env.APP_NAME }}" >> $GITHUB_ENV
 
       - name: Build Docker image
         id: build-image
@@ -62,6 +59,9 @@ jobs:
         uses: redhat-actions/openshift-tools-installer@v1
         with:
           oc: 4.10
+
+      - name: Set Registry Path as Environment Variable
+        run: echo "REGISTRY_PATH=${{ env.GHCR_REGISTRY }}/${{ env.APP_NAME }}" >> $GITHUB_ENV
 
       - name: Log in to OpenShift
         uses: redhat-actions/oc-login@v1
