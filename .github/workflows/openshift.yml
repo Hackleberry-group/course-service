@@ -55,7 +55,7 @@ jobs:
       - name: Build Docker image
         id: build-image
         run: |
-          docker buildx build -t ${{ env.GHCR_IMAGE_NAME }}:${{ env.IMAGE_TAGS }} -f  ./CourseServiceAPI/Dockerfile
+          docker build -t ${{ env.GHCR_IMAGE_NAME }}:${{ env.IMAGE_TAGS }} -f  ./CourseServiceAPI/Dockerfile .
           docker push ${{ env.GHCR_IMAGE_NAME }}:${{ env.IMAGE_TAGS }}
 
       - name: Install OpenShift CLI
