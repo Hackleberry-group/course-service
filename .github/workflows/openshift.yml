@@ -47,7 +47,7 @@ jobs:
         run: git submodule update --init --recursive
       
       - name: Log in to GHCR
-        run: echo ${{ secrets.GHCR_TOKEN }} | docker login ${{ env.GHCR_REGISTRY }} -u ${{ env.GHCR_USERNAME }} --password-stdin
+        run: echo ${{ secrets.GHCR_TOKEN }} | docker login ${{ env.GHCR_REGISTRY }} -u ${{ secrets.GHCR_USERNAME }} --password-stdin
 
       - name: Set Registry Path as Environment Variable
         run: echo "REGISTRY_PATH=${{ env.GHCR_REGISTRY }}/${{ env.APP_NAME }}" >> $GITHUB_ENV
