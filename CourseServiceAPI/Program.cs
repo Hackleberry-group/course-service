@@ -24,6 +24,13 @@ builder.Services.AddSwaggerGen();
 var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.AddConsole());
 var logger = loggerFactory.CreateLogger<Program>();
 
+logger.LogInformation("Starting application");
+logger.LogInformation("Environment: {Environment}", builder.Environment.EnvironmentName);
+logger.LogInformation("Content root path: {ContentRoot}", builder.Environment.ContentRootPath);
+logger.LogInformation("Web root path: {WebRoot}", builder.Environment.WebRootPath);
+logger.LogInformation("Application name: {ApplicationName}", builder.Environment.ApplicationName);
+logger.LogInformation("Config Size {ConfigSize}", builder.Configuration.AsEnumerable().Count());
+
 // Log all configuration settings
 foreach (var config in builder.Configuration.AsEnumerable())
 {
