@@ -58,7 +58,14 @@ builder.Services.AddValidatorsFromAssemblyContaining<ExerciseDtoValidator>();
 
 builder.Services.AddMassTransit(x =>
 {
-    x.UsingRabbitMq();
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("rabbitmq://rabbitmq:5672", h =>
+        {
+            h.Username("user");
+            h.Password("password");
+        });
+    });
 });
 
 // Add CORS services TODO: Remove this if we don't need CORS
