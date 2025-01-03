@@ -9,6 +9,9 @@ USER $APP_UID
 WORKDIR /app
 EXPOSE 1030
 
+# Set the environment variable to ensure the application listens on 0.0.0.0:1030
+ENV ASPNETCORE_URLS=http://0.0.0.0:1030
+
 # Use the .NET SDK for building the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
@@ -16,7 +19,6 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy project files and submodule references
-# Ensure submodule paths match the repository structure
 COPY ["CourseServiceAPI/CourseServiceAPI.csproj", "CourseServiceAPI/"]
 COPY ["SharedLibraries/Exceptions/HackleberryExceptions.csproj", "SharedLibraries/Exceptions/"]
 COPY ["SharedLibraries/HackleberrySharedModels/HackleberryModels.csproj", "SharedLibraries/HackleberrySharedModels/"]
